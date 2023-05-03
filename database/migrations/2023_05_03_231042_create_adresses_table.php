@@ -11,10 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('assessments', function (Blueprint $table) {
+        Schema::create('adresses', function (Blueprint $table) {
             $table->id();
-            $table->enum('assessments', ['1', '2', '3', '4', '5']);
-            $table->string('comments');
+            $table->integer('cep');
+            $table->string('street');
+            $table->integer('number');
+            $table->string('complement');
+            $table->string('neighborhood');
+            $table->string('city');
+            $table->string('state');
             $table->timestamps();
         });
     }
@@ -24,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('assessments');
+        Schema::dropIfExists('adresses');
     }
 };

@@ -11,11 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('assessments', function (Blueprint $table) {
-            $table->id();
-            $table->enum('assessments', ['1', '2', '3', '4', '5']);
-            $table->string('comments');
-            $table->timestamps();
+        Schema::table('users', function (Blueprint $table) {
+            $table->float("assessments", 2, 2);
+            $table->dropColumn('email_verified_at');
+
         });
     }
 
@@ -24,6 +23,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('assessments');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn("assessments");
+            $table->timestamp('email_verified_at')->nullable();
+        });
     }
 };

@@ -23,9 +23,6 @@ return new class extends Migration
             $table->dateTime('delivery_week', $precision = 0);
             $table->dateTime('weekend_withdrawal', $precision = 0);
             $table->dateTime('weekend_delivery', $precision = 0);
-            $table->integer('brand_id');
-            $table->integer('category_id');
-            $table->integer('address_id');
             $table->timestamps();
         });
     }
