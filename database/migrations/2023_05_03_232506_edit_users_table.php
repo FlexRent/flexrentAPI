@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->float("assessments", 2, 2);
             $table->dropColumn('email_verified_at');
-
         });
     }
 

@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('product', function (Blueprint $table) {
+        Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('description');
             $table->string('model');
-            $table->decimal('price', 8,2);
+            $table->decimal('price', 8, 2);
             $table->string('image');
             $table->enum('status', ['available', 'negotiation', 'rented']);
             $table->dateTime('withdrawal_week', $precision = 0);
@@ -26,12 +26,12 @@ return new class extends Migration
             $table->timestamps();
         });
     }
-    
+
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('product');
+        Schema::dropIfExists('products');
     }
 };
