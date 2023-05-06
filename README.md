@@ -1,4 +1,4 @@
-## Comandos interessantes
+# Comandos interessantes
 
 - Mudar a versão do php no linux:
 `update-alternatives --config php`
@@ -12,7 +12,7 @@
 - Criar Resource
 `php artisan make:resource NomeResource`
 
-# Comandos de Banco de Dados
+## Comandos de Banco de Dados
 
 - CREATE DATABASE FlexRentall;
 - USE FlexRentall;
