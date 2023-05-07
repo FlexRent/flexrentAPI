@@ -14,15 +14,15 @@ return new class extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('description');
-            $table->string('model');
-            $table->decimal('price', 8, 2);
-            $table->string('image');
-            $table->enum('status', ['available', 'negotiation', 'rented']);
-            $table->dateTime('withdrawal_week', $precision = 0);
-            $table->dateTime('delivery_week', $precision = 0);
-            $table->dateTime('weekend_withdrawal', $precision = 0);
-            $table->dateTime('weekend_delivery', $precision = 0);
+            $table->string('description')->nullable();
+            $table->string('model')->nullable();
+            $table->decimal('price', 8, 2)->nullable();
+            $table->string('image')->nullable();
+            $table->enum('status', ['available', 'negotiation', 'rented'])->nullable();
+            $table->dateTime('withdrawal_week', $precision = 0)->nullable();
+            $table->dateTime('delivery_week', $precision = 0)->nullable();
+            $table->dateTime('weekend_withdrawal', $precision = 0)->nullable();
+            $table->dateTime('weekend_delivery', $precision = 0)->nullable();
             $table->timestamps();
         });
     }
