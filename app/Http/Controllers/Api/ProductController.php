@@ -36,6 +36,21 @@ class ProductController extends Controller
             'produto' => new ProductResource($product)
         ], 200);
 
-        
+    }
+
+    public function update (ProductsRequest $request, Product $product){
+
+        $product = Product::find($product->id);
+
+        $product->name = $request->name;
+
+        $product->update();
+
+        return response() -> json([
+            'status' => '200',
+            'mensagem' => 'Produto atualizado'
+        ], 200);
+
+
     }
 }
