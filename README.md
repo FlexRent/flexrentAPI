@@ -12,6 +12,9 @@
 - Criar Resource
 `php artisan make:resource NomeResource`
 
+- Criar Request
+`php artisan make:request NomeRequest`
+
 ## Comandos de Banco de Dados
 
 - CREATE DATABASE FlexRentall;
