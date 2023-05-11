@@ -23,7 +23,20 @@ class ProductsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "name" => "required"
+            "name" => "required",
+            "description" => "required",
+            "model" => "required",
+            "price" => "required",
+            "image" => "required",
+            "status" => "required",
+            "withdrawal_week" => "required",
+            "delivery_week" => "required",
+            "weekend_withdrawal" => "required",
+            "weekend_delivery" => "required"
+            // "imame" => "required"
+            // "imame" => "required"
+            // "imame" => "required"
+
         ];
     }
 }
