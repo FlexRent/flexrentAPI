@@ -46,6 +46,9 @@ class ProductController extends Controller
         $product->delivery_week = $request->delivery_week;
         $product->weekend_withdrawal = $request->weekend_withdrawal;
         $product->weekend_delivery = $request->weekend_delivery;
+        $product->category_id = $request->category_id;
+        $product->brand_id = $request->brand_id;
+        $product->address_id = $request->address_id;
 
         $product->save();
 
@@ -71,6 +74,9 @@ class ProductController extends Controller
         $product->delivery_week = $request->delivery_week;
         $product->weekend_withdrawal = $request->weekend_withdrawal;
         $product->weekend_delivery = $request->weekend_delivery;
+        $product->category_id = $request->category_id;
+        $product->brand_id = $request->brand_id;
+        $product->address_id = $request->address_id;
 
         $product->update();
 

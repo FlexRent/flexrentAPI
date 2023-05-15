@@ -13,16 +13,16 @@ class Product extends Model
 
     public function Brands()
     {
-        return $this->belongsTo(Brand::class, 'brand_id');
+        return $this->belongsTo(Brand::class, 'brand_id', 'brand_id');
     }
 
-    public function Categories()
+    public function Categoria()
     {
-        return $this->belongsTo(Category::class, 'category_id');
+        return $this->belongsTo(Category::class, 'category_id', 'category_id');
     }
 
     public function Addresses()
     {
-        return $this->belongsTo(Address::class, 'address_id');
+        return $this->belongsTo(Address::class, 'address_id', 'address_id');
     }
 }

@@ -32,11 +32,10 @@ class ProductsRequest extends FormRequest
             "withdrawal_week" => "required",
             "delivery_week" => "required",
             "weekend_withdrawal" => "required",
-            "weekend_delivery" => "required"
-            // "imame" => "required"
-            // "imame" => "required"
-            // "imame" => "required"
-
+            "weekend_delivery" => "required",
+            "category_id" => "required",
+            "brand_id" => "required",
+            "address_id" => "required"
         ];
     }
 }
