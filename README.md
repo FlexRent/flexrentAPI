@@ -25,3 +25,6 @@
 
 - Rollback Migration
 `php artisan migrate:rollback`
+
+- Criar Migration
+`php artisan make:migration create_flights_table`
