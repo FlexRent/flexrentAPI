@@ -43,35 +43,33 @@ class CategoryController extends Controller
         ], 200);
     }
 
-    // /**
-    //  * Display the specified resource.
-    //  */
-    // public function show(Category $category)
-    // {
-    //     //
-    // }
+    public function update (CategoriesRequest $request, Category $category){
 
-    // /**
-    //  * Show the form for editing the specified resource.
-    //  */
-    // public function edit(Category $category)
-    // {
-    //     //
-    // }
+        $category = Category::find($category->id);
 
-    // /**
-    //  * Update the specified resource in storage.
-    //  */
-    // public function update(Request $request, Category $category)
-    // {
-    //     //
-    // }
+        $category->name = $request->name;
+        $category->description = $request->description;
 
-    // /**
-    //  * Remove the specified resource from storage.
-    //  */
-    // public function destroy(Category $category)
-    // {
-    //     //
-    // }
+        $category->update();
+
+        return response() -> json([
+            'status' => '200',
+            'mensagem' => 'Categoria atualizada com sucesso'
+        ], 200);
+
+
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Category $category)
+    {
+        $category->delete();
+
+        return response() -> json([
+            'status' => '200',
+            'mensagem' => 'Categoria deletada'
+        ], 200);
+    }
 }
