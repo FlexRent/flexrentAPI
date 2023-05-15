@@ -16,7 +16,19 @@ class ProductResource extends JsonResource
     {
         return [
             'id' => $this->id, 
-            'name' => $this->name
+            'name' => $this->name,
+            'description' => $this->description,
+            'model' => $this->model,
+            'price' => $this->price,
+            'image' => $this->image,
+            'status' => $this->status,
+            'withdrawal_week' => $this->withdrawal_week,
+            'delivery_week' => $this->delivery_week,
+            'weekend_withdrawal' => $this->weekend_withdrawal,
+            'weekend_delivery' => $this->weekend_delivery
+            // 'brand_id' => $this->withdrawal_week,
+            // 'category_id' => $this->withdrawal_week,
+            // 'address_id' => $this->withdrawal_week,
         ];
     }
 }

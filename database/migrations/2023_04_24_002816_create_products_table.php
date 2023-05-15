@@ -19,10 +19,10 @@ return new class extends Migration
             $table->decimal('price', 8, 2)->nullable();
             $table->string('image')->nullable();
             $table->enum('status', ['available', 'negotiation', 'rented'])->nullable();
-            $table->dateTime('withdrawal_week', $precision = 0)->nullable();
-            $table->dateTime('delivery_week', $precision = 0)->nullable();
-            $table->dateTime('weekend_withdrawal', $precision = 0)->nullable();
-            $table->dateTime('weekend_delivery', $precision = 0)->nullable();
+            $table->time('withdrawal_week', 6)->nullable();
+            $table->time('delivery_week', 6)->nullable();
+            $table->time('weekend_withdrawal', 6)->nullable();
+            $table->time('weekend_delivery', 6)->nullable();
             $table->timestamps();
         });
     }
