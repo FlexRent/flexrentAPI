@@ -1,7 +1,5 @@
 # Comandos interessantes
 
-teste 
-
 - Mudar a versão do php no linux:
 `update-alternatives --config php`
 
