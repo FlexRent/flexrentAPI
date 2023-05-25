@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\CardController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\PassportAuthController;
@@ -27,5 +28,6 @@ Route::post('/login', [PassportAuthController::class, 'login']);
 Route::post('/logout', [PassportAuthController::class, 'logout'])->middleware('auth:api');
 Route::get('/user', [PassportAuthController::class, 'userInfo'])->middleware('auth:api');
 
+Route::apiResource('cards', CardController::class)->middleware('auth:api');
 Route::apiResource('products', ProductController::class)->middleware('auth:api');
 Route::apiResource('categories', CategoryController::class)->middleware('auth:api');
