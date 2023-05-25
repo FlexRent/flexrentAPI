@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\AssessmentsController;
 use App\Http\Controllers\Api\PassportAuthController;
 
 /*
@@ -29,3 +30,4 @@ Route::get('/user', [PassportAuthController::class, 'userInfo'])->middleware('au
 
 Route::apiResource('products', ProductController::class)->middleware('auth:api');
 Route::apiResource('categories', CategoryController::class)->middleware('auth:api');
+Route::apiResource('assessments', AssessmentsController::class)->middleware('auth:api');
