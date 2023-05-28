@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\CardController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\AssessmentsController;
+use App\Http\Controllers\Api\AddressesController;
 use App\Http\Controllers\Api\PassportAuthController;
 
 /*
@@ -34,6 +36,12 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     // Categorias
     Route::apiResource('categories', CategoryController::class);
+
+    // Avaliação
+    Route::apiResource('assessments', AssessmentsController::class);
+
+    // Endereços
+    Route::apiResource('addresses', AddressesController::class);
 });
 
 // Autenticação
