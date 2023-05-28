@@ -56,7 +56,6 @@ class CardController extends Controller
         $user = Cards::where('user_id', auth()->user()->id)->first();
 
         if ($card->user_id == $user->user_id) {
-            $card = Cards::where('user_id', auth()->user()->id)->where("id", $card->id)->first();
             $card->card_name = $request->card_name;
             $card->card_title = $request->card_title;
             $card->card_number = $request->card_number;
