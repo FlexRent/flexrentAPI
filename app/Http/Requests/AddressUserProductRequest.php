@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AdressUserProductRequest extends FormRequest
+class AddressUserProductRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,8 +23,8 @@ class AdressUserProductRequest extends FormRequest
     {
         return [
             "address_id" => "required",
-            "user_id" => "required",
-            "product_id" => "required"
+            "user_id" => "required"
+            // "product_id" => "required"
         ];
     }
 }

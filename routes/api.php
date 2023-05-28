@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\AssessmentsController;
 use App\Http\Controllers\Api\AddressesController;
+use App\Http\Controllers\Api\AddressUserProductController;
 use App\Http\Controllers\Api\PassportAuthController;
 
 /*
@@ -35,3 +36,4 @@ Route::apiResource('products', ProductController::class)->middleware('auth:api')
 Route::apiResource('categories', CategoryController::class)->middleware('auth:api');
 Route::apiResource('assessments', AssessmentsController::class)->middleware('auth:api');
 Route::apiResource('addresses', AddressesController::class)->middleware('auth:api');
+Route::apiResource('address_user_product', AddressUserProductController::class)->middleware('auth:api');
