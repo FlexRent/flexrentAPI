@@ -28,3 +28,6 @@
 
 - Criar Migration
 `php artisan make:migration create_flights_table`
+
+- Editar Migration
+`php artisan make:migration update_nome_tabela --table=nome_tabela`
