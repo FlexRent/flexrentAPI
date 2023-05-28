@@ -7,65 +7,77 @@ use Illuminate\Http\Request;
 use App\Models\Addresses;
 use App\Http\Resources\AddressesResource;
 use App\Http\Requests\AddressesRequest;
+use Illuminate\Http\Response;
 
 class AddressesController extends Controller
 {
     public function index()
     {
-        $address = Addresses::all();
+        $addresses = Addresses::paginate(10); // 10 produtos por página
+
+        if (!$addresses->isEmpty()) {
+            $paginationData = $addresses->toArray();
+
+            return response()->json([
+                'status' => Response::HTTP_OK,
+                'mensagem' => 'Lista de endereços retornada',
+                'pagination' => [
+                    'currentPage' => $paginationData['current_page'],
+                    'totalPages' => $paginationData['last_page'],
+                    'totalAddresses' => $paginationData['total'],
+                    'perPage' => $paginationData['per_page'],
+                    'prev_page_url' => $paginationData['prev_page_url'],
+                    'next_page_url' => $paginationData['next_page_url'],
+                ],
+                'addresses' => AddressesResource::collection($addresses)
+            ], Response::HTTP_OK);
+        }
 
         return response()->json([
-            'status' => 200,
-            'mensagem' => 'Lista de endereços retornada',
-            'addresses' => AddressesResource::collection($address)
-        ], 200);
+            'status' => Response::HTTP_NOT_FOUND,
+            'mensagem' => 'Nenhum produto encontrado',
+        ], Response::HTTP_NOT_FOUND);
     }
+
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(AddressesRequest $request)
     {
-        $address = new Addresses();
+        $address = new Addresses($request->all());
 
-        $address->street = $request->street;
-        $address->number = $request->number;
-        $address->complement = $request->complement;
-        $address->district = $request->district;
-        $address->city = $request->city;
-        $address->state = $request->state;
-        $address->country = $request->country;
-        $address->zipcode = $request->zipcode;
-        
-        $address->save();
+        if ($address->save()) {
+            return response()->json([
+                'status' => Response::HTTP_OK,
+                'mensagem' => 'Endereço criado com sucesso',
+                'addresses' => new AddressesResource($address)
+            ], Response::HTTP_OK);
+        }
 
         return response()->json([
-            'status' => 200,
-            'mensagem' => 'Endereço criado com sucesso',
-            'addresses' => new AddressesResource($address)
-        ], 200);
+            'status' => Response::HTTP_INTERNAL_SERVER_ERROR,
+            'mensagem' => 'Erro ao criar endereço',
+        ], Response::HTTP_INTERNAL_SERVER_ERROR);
     }
 
-    public function update (AddressesRequest $request, Addresses $address){
 
-        $address = Addresses::find($address->id);
+    public function update(AddressesRequest $request, Addresses $address)
+    {
 
-        $address->street = $request->street;
-        $address->number = $request->number;
-        $address->complement = $request->complement;
-        $address->district = $request->district;
-        $address->city = $request->city;
-        $address->state = $request->state;
-        $address->country = $request->country;
-        $address->zipcode = $request->zipcode;
+        if (Addresses::find($address->id)) {
+            $address->update($request->all());
 
-        $address->update();
+            return response()->json([
+                'status' => Response::HTTP_OK,
+                'mensagem' => 'Endereço atualizado com sucesso'
+            ], Response::HTTP_OK);
+        }
 
-        return response() -> json([
-            'status' => '200',
-            'mensagem' => 'Endereço atualizado com sucesso'
-        ], 200);
-
+        return response()->json([
+            'status' => Response::HTTP_NOT_FOUND,
+            'mensagem' => 'Endereço não encontrado'
+        ], Response::HTTP_NOT_FOUND);
     }
 
     /**
@@ -73,12 +85,18 @@ class AddressesController extends Controller
      */
     public function destroy(Addresses $address)
     {
+        // if(é um administrador?){
         $address->delete();
 
-        return response() -> json([
-            'status' => '200',
+        return response()->json([
+            'status' => Response::HTTP_OK,
             'mensagem' => 'Endereço deletado'
-        ], 200);
+        ], Response::HTTP_OK);
+        // }
+
+        // return response()->json([
+        //     'status' => Response::HTTP_UNAUTHORIZED,
+        //     'mensagem' => 'Você não tem permissão para deletar este produto'
+        // ], Response::HTTP_UNAUTHORIZED);
     }
 }
-
