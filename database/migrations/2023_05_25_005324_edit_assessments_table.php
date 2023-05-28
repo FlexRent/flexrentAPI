@@ -23,8 +23,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('assessments', function (Blueprint $table) {
-            $table->integer('user_id');
-            $table->integer('product_id');
+            $table->dropColumn('user_id');
+            $table->dropColumn('product_id');
         });
     }
 };
