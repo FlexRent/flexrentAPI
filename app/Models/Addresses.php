@@ -11,8 +11,8 @@ class Addresses extends Model
 
     protected $fillable = ['street', 'number', 'complement', 'district', 'city', 'state', 'country', 'zipcode'];
 
-    public function Products()
-    {
-        return $this->hasMany(Product::class, 'address_id');
-    }
+    // public function Products()
+    // {
+    //     return $this->hasMany(Product::class, 'address_id');
+    // }
 }
