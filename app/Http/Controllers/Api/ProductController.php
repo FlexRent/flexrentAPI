@@ -18,7 +18,7 @@ class ProductController extends Controller
     {
         $products = Product::paginate(10); // 10 produtos por página
 
-        if ($products->count() > 0) {
+        if (!$products->isEmpty()) {
             $paginationData = $products->toArray();
 
             return response()->json([
@@ -34,12 +34,41 @@ class ProductController extends Controller
                 ],
                 'products' => ProductResource::collection($products)
             ], Response::HTTP_OK);
-        } else {
-            return response()->json([
-                'status' => Response::HTTP_NOT_FOUND,
-                'mensagem' => 'Nenhum produto encontrado',
-            ], Response::HTTP_NOT_FOUND);
         }
+
+        return response()->json([
+            'status' => Response::HTTP_NOT_FOUND,
+            'mensagem' => 'Nenhum produto encontrado',
+        ], Response::HTTP_NOT_FOUND);
+    }
+
+    /**
+     * Lista um produto especifico
+     */
+    public function showOne(Request $request)
+    {
+        $productId = $request->product_id;
+
+        if (!is_numeric($productId)) {
+            return response()->json([
+                'status' => Response::HTTP_BAD_REQUEST,
+                'mensagem' => 'ID do produto inválido',
+            ], Response::HTTP_BAD_REQUEST);
+        }
+
+        $product = Product::find($productId);
+
+        if ($product) {
+            return response()->json([
+                'status' => Response::HTTP_OK,
+                'mensagem' => 'Produto encontrado',
+                'product' => $product
+            ], Response::HTTP_OK);
+        }
+        return response()->json([
+            'status' => Response::HTTP_NOT_FOUND,
+            'mensagem' => 'Nenhum produto encontrado',
+        ], Response::HTTP_NOT_FOUND);
     }
 
     /**
@@ -49,7 +78,7 @@ class ProductController extends Controller
     {
         $products = Product::where('user_id', auth()->user()->id)->paginate(10);
 
-        if ($products->count() > 0) {
+        if (!$products->isEmpty()) {
             $paginationData = $products->toArray();
 
             return response()->json([
@@ -65,33 +94,55 @@ class ProductController extends Controller
                 ],
                 'products' => ProductResource::collection($products)
             ], Response::HTTP_OK);
-        } else {
-            return response()->json([
-                'status' => Response::HTTP_NOT_FOUND,
-                'mensagem' => 'Nenhum produto encontrado',
-            ], Response::HTTP_NOT_FOUND);
         }
+
+        return response()->json([
+            'status' => Response::HTTP_NOT_FOUND,
+            'mensagem' => 'Nenhum produto encontrado',
+        ], Response::HTTP_NOT_FOUND);
     }
 
-    /**
-     * Lista um produto especifico
-     */
-    public function showOne(Request $request)
+    public function filter(Request $request)
     {
-        $product = Product::find($request->product_id);
+        $query = Product::query();
 
-        if ($product) {
+        if ($request->filled('COLUNA_FILTRO') && $request->filled('FILTRO')) {
+            $query->where($request->input('COLUNA_FILTRO'), 'LIKE', "%{$request->input('FILTRO')}%");
+        }
+
+        if ($request->filled('COLUNA_ORDER') && $request->filled('ORDER')) {
+            $orderOperator = $request->input('ORDER') == 'asc' ? 'asc' : 'desc';
+            $query->orderBy($request->input('COLUNA_ORDER'), $orderOperator);
+        }
+
+        $products = $query->paginate(10);
+        $paginationData = $products->toArray();
+
+        $queryParams = $request->only(['COLUNA_ORDER', 'ORDER', 'COLUNA_FILTRO', 'FILTRO']);
+        $queryString = http_build_query($queryParams);
+
+        $prevPageUrl = isset($paginationData['prev_page_url']) ? $paginationData['prev_page_url'] . '&' . $queryString : null;
+        $nextPageUrl = isset($paginationData['next_page_url']) ? $paginationData['next_page_url'] . '&' . $queryString : null;
+
+        if (!$products->isEmpty()) {
             return response()->json([
                 'status' => Response::HTTP_OK,
-                'mensagem' => 'Produto encontrado',
-                'product' => $product
+                'mensagem' => 'Lista de produtos retornada',
+                'pagination' => [
+                    'currentPage' => $paginationData['current_page'],
+                    'totalPages' => $paginationData['last_page'],
+                    'totalProducts' => $paginationData['total'],
+                    'perPage' => $paginationData['per_page'],
+                    'prev_page_url' => $prevPageUrl,
+                    'next_page_url' => $nextPageUrl,
+                ],
+                'products' => ProductResource::collection($products)
             ], Response::HTTP_OK);
-        } else {
-            return response()->json([
-                'status' => Response::HTTP_NOT_FOUND,
-                'mensagem' => 'Nenhum produto encontrado',
-            ], Response::HTTP_NOT_FOUND);
         }
+        return response()->json([
+            'status' => Response::HTTP_NOT_FOUND,
+            'mensagem' => 'Nenhum produto encontrado',
+        ], Response::HTTP_NOT_FOUND);
     }
 
     /**
@@ -99,32 +150,21 @@ class ProductController extends Controller
      */
     public function store(ProductsRequest $request)
     {
-
-        $product = new Product();
-
-        $product->name = $request->name;
-        $product->description = $request->description;
-        $product->model = $request->model;
-        $product->price = $request->price;
-        $product->image = $request->image;
-        $product->status = $request->status;
-        $product->withdrawal_week = $request->withdrawal_week;
-        $product->delivery_week = $request->delivery_week;
-        $product->weekend_withdrawal = $request->weekend_withdrawal;
-        $product->weekend_delivery = $request->weekend_delivery;
+        $product = new Product($request->all());
         $product->user_id = auth()->user()->id;
-        // $withdrawal_week = $request->withdrawal_week;
-        // $withdrawal_week->format('H:i:s');
-        // $withdrawal_week_formated = Carbon::createFromFormat('H:i:s', $withdrawal_week)->format('H:i');
-        // $withdrawal_week_formated->format('H:i:s');
 
-        $product->save();
+        if ($product->save()) {
+            return response()->json([
+                'status' => Response::HTTP_OK,
+                'mensagem' => 'Produto criado com sucesso',
+                'produto' => new ProductResource($product),
+            ], Response::HTTP_OK);
+        }
 
         return response()->json([
-            'status' => Response::HTTP_OK,
-            'mensagem' => 'Produto criado com sucesso',
-            'produto' => new ProductResource($product),
-        ], Response::HTTP_OK);
+            'status' => Response::HTTP_INTERNAL_SERVER_ERROR,
+            'mensagem' => 'Erro ao criar produto',
+        ], Response::HTTP_INTERNAL_SERVER_ERROR);
     }
 
     /**
@@ -132,33 +172,19 @@ class ProductController extends Controller
      */
     public function update(ProductsRequest $request, Product $product)
     {
-
-        $user = Product::where('user_id', auth()->user()->id)->first();
-
-        if ($product->user_id == $user->user_id) {
-            $product->name = $request->name;
-            $product->description = $request->description;
-            $product->model = $request->model;
-            $product->price = $request->price;
-            $product->image = $request->image;
-            $product->status = $request->status;
-            $product->withdrawal_week = $request->withdrawal_week;
-            $product->delivery_week = $request->delivery_week;
-            $product->weekend_withdrawal = $request->weekend_withdrawal;
-            $product->weekend_delivery = $request->weekend_delivery;
-
-            $product->update();
+        if ($product->user_id == auth()->user()->id) {
+            $product->update($request->all());
 
             return response()->json([
                 'status' => Response::HTTP_OK,
                 'mensagem' => 'Produto atualizado com sucesso'
             ], Response::HTTP_OK);
-        } else {
-            return response()->json([
-                'status' => Response::HTTP_UNAUTHORIZED,
-                'mensagem' => 'Você não tem permissão para atualizar este produto'
-            ], Response::HTTP_UNAUTHORIZED);
         }
+
+        return response()->json([
+            'status' => Response::HTTP_UNAUTHORIZED,
+            'mensagem' => 'Você não tem permissão para atualizar este produto'
+        ], Response::HTTP_UNAUTHORIZED);
     }
 
     /**
@@ -166,21 +192,18 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        $user = Product::where('user_id', auth()->user()->id)->first();
-
-        if ($product->user_id == $user->user_id) {
-
+        if ($product->user_id == auth()->user()->id) {
             $product->delete();
 
             return response()->json([
                 'status' => Response::HTTP_OK,
                 'mensagem' => 'Produto deletado'
             ], Response::HTTP_OK);
-        } else {
-            return response()->json([
-                'status' => Response::HTTP_UNAUTHORIZED,
-                'mensagem' => 'Você não tem permissão para deletar este produto'
-            ], Response::HTTP_UNAUTHORIZED);
         }
+
+        return response()->json([
+            'status' => Response::HTTP_UNAUTHORIZED,
+            'mensagem' => 'Você não tem permissão para deletar este produto'
+        ], Response::HTTP_UNAUTHORIZED);
     }
 }

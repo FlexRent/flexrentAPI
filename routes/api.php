@@ -27,8 +27,9 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::apiResource('cards', CardController::class);
 
     // Produtos
-    Route::get('/products/user', [ProductController::class, 'showProductsUser']);
     Route::get('/products/showOne', [ProductController::class, 'showOne']);
+    Route::get('/products/user', [ProductController::class, 'showProductsUser']);
+    Route::get('/products/filter', [ProductController::class, 'filter']);
     Route::apiResource('products', ProductController::class);
 
     // Categorias
