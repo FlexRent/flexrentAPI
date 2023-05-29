@@ -102,6 +102,9 @@ class ProductController extends Controller
         ], Response::HTTP_NOT_FOUND);
     }
 
+    /**
+     * Lista produtos com filtros
+     */
     public function filter(Request $request)
     {
         $query = Product::query();
@@ -151,7 +154,7 @@ class ProductController extends Controller
     public function store(ProductsRequest $request)
     {
         $product = new Product($request->all());
-        $product->user_id = auth()->user()->id;
+        $product->user_id = auth()->user()->id; // acho que nao precisa disso
 
         if ($product->save()) {
             return response()->json([
@@ -162,9 +165,9 @@ class ProductController extends Controller
         }
 
         return response()->json([
-            'status' => Response::HTTP_INTERNAL_SERVER_ERROR,
+            'status' => Response::HTTP_BAD_REQUEST,
             'mensagem' => 'Erro ao criar produto',
-        ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        ], Response::HTTP_BAD_REQUEST);
     }
 
     /**

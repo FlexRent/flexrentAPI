@@ -46,8 +46,8 @@ class AssessmentsController extends Controller
         }
 
         return response()->json([
-            'status' => Response::HTTP_INTERNAL_SERVER_ERROR,
+            'status' => Response::HTTP_BAD_REQUEST,
             'mensagem' => 'Erro ao criar avaliação'
-        ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        ], Response::HTTP_BAD_REQUEST);
     }
 }
