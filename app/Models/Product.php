@@ -11,19 +11,19 @@ class Product extends Model
 
     protected $table = 'products';
     protected $primaryKey = 'id';
-    protected $fillable = ['name', 'description', 'model', 'price', 'image', 'status', 'withdrawal_week', 'delivery_week', 'weekend_withdrawal', 'weekend_delivery', 'brand_id', 'category_id', 'address_id'];
+    protected $fillable = ['name', 'description', 'model', 'price', 'image', 'status', 'withdrawal_week', 'delivery_week', 'weekend_withdrawal', 'weekend_delivery', 'brand_id', 'brand_name', 'category_id', 'address_id'];
 
-    public function Brands()
+    public function ProductBrands()
     {
-        return $this->belongsTo(Brand::class, 'brand_id');
+        return $this->belongsTo(Brands::class, 'brand_id');
     }
 
-    public function Categories()
+    public function ProductCategories()
     {
         return $this->belongsTo(Category::class, 'category_id');
     }
 
-    public function Addresses()
+    public function ProductAddresses()
     {
         return $this->belongsTo(Address::class, 'address_id');
     }
