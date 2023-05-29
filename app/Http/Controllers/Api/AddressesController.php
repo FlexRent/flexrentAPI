@@ -9,8 +9,13 @@ use App\Http\Resources\AddressesResource;
 use App\Http\Requests\AddressesRequest;
 use Illuminate\Http\Response;
 
+
+// TODO: Criar uma forma de ver se o usuário logado é o dono do endereço na classe toda
 class AddressesController extends Controller
 {
+    /**
+     * Lista todos os endereços do usuário logado
+     */
     public function index()
     {
         $addresses = Addresses::paginate(10); // 10 produtos por página
@@ -34,14 +39,14 @@ class AddressesController extends Controller
         }
 
         return response()->json([
-            'status' => Response::HTTP_NOT_FOUND,
-            'mensagem' => 'Nenhum produto encontrado',
-        ], Response::HTTP_NOT_FOUND);
+            'status' => Response::HTTP_OK,
+            'mensagem' => 'Nenhum endereços encontrado',
+        ], Response::HTTP_OK);
     }
 
 
     /**
-     * Store a newly created resource in storage.
+     * Cria um novo endereço
      */
     public function store(AddressesRequest $request)
     {
@@ -61,7 +66,9 @@ class AddressesController extends Controller
         ], Response::HTTP_BAD_REQUEST);
     }
 
-
+    /**
+     * Atualiza um endereço
+     */
     public function update(AddressesRequest $request, Addresses $address)
     {
 
@@ -81,23 +88,23 @@ class AddressesController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Deleta um endereço
      */
     public function destroy(Addresses $address)
     {
 
-        if ($address->user_id == auth()->user()->id) {
-            $address->delete();
-
-            return response()->json([
-                'status' => Response::HTTP_OK,
-                'mensagem' => 'Endereço deletado'
-            ], Response::HTTP_OK);
-        }
+        // if ($address->user_id == auth()->user()->id) {
+        $address->delete();
 
         return response()->json([
-            'status' => Response::HTTP_UNAUTHORIZED,
-            'mensagem' => 'Você não tem permissão para deletar este produto'
-        ], Response::HTTP_UNAUTHORIZED);
+            'status' => Response::HTTP_OK,
+            'mensagem' => 'Endereço deletado'
+        ], Response::HTTP_OK);
+        // }
+
+        // return response()->json([
+        //     'status' => Response::HTTP_UNAUTHORIZED,
+        //     'mensagem' => 'Você não tem permissão para deletar este produto'
+        // ], Response::HTTP_UNAUTHORIZED);
     }
 }

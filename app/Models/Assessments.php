@@ -9,7 +9,7 @@ class Assessments extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['assessments, comments, user_id, product_id'];
+    protected $fillable = ['assessments', 'comments', 'user_id', 'product_id'];
 
     public function User()
     {

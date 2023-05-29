@@ -12,7 +12,7 @@ use Illuminate\Http\Response;
 class CardController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Lista todos os cartões do usuário logado
      */
     public function index()
     {
@@ -42,17 +42,18 @@ class CardController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Cria um novo cartão
      */
     public function store(Request $request)
     {
-        $card = new Cards($request->all($request->all()));
+        $card = new Cards($request->all());
+        $card->user_id = auth()->user()->id;
 
         if ($card->save()) {
             return response()->json([
                 'status' => Response::HTTP_OK,
                 'mensagem' => 'Cartão criado com sucesso',
-                'cartão' => $card
+                'cartão' => new CardResource($card)
             ], Response::HTTP_OK);
         }
 
@@ -63,7 +64,7 @@ class CardController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Atualiza um cartão
      */
     public function update(CardsRequest $request, Cards $card)
     {
@@ -75,7 +76,6 @@ class CardController extends Controller
             ], Response::HTTP_OK);
         }
 
-
         return response()->json([
             'status' => Response::HTTP_UNAUTHORIZED,
             'mensagem' => 'Você não tem permissão para atualizar esse cartão'
@@ -83,7 +83,7 @@ class CardController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Deleta um cartão
      */
     public function destroy(Cards $card)
     {

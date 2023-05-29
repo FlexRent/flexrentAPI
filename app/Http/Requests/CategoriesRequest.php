@@ -29,7 +29,7 @@ class CategoriesRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "name" => "required",
+            "name" => "required|unique:categories",
             "description" => "required",
         ];
     }
@@ -56,6 +56,7 @@ class CategoriesRequest extends FormRequest
     {
         return [
             "required" => "O campo ':attribute' é obrigatório.",
+            'unique' => 'A categoria já existe',
         ];
     }
 }

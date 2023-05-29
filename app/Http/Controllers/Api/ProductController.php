@@ -37,9 +37,9 @@ class ProductController extends Controller
         }
 
         return response()->json([
-            'status' => Response::HTTP_NOT_FOUND,
+            'status' => Response::HTTP_OK,
             'mensagem' => 'Nenhum produto encontrado',
-        ], Response::HTTP_NOT_FOUND);
+        ], Response::HTTP_OK);
     }
 
     /**
@@ -66,9 +66,9 @@ class ProductController extends Controller
             ], Response::HTTP_OK);
         }
         return response()->json([
-            'status' => Response::HTTP_NOT_FOUND,
+            'status' => Response::HTTP_OK,
             'mensagem' => 'Nenhum produto encontrado',
-        ], Response::HTTP_NOT_FOUND);
+        ], Response::HTTP_OK);
     }
 
     /**
@@ -97,9 +97,9 @@ class ProductController extends Controller
         }
 
         return response()->json([
-            'status' => Response::HTTP_NOT_FOUND,
+            'status' => Response::HTTP_OK,
             'mensagem' => 'Nenhum produto encontrado',
-        ], Response::HTTP_NOT_FOUND);
+        ], Response::HTTP_OK);
     }
 
     /**
@@ -143,9 +143,9 @@ class ProductController extends Controller
             ], Response::HTTP_OK);
         }
         return response()->json([
-            'status' => Response::HTTP_NOT_FOUND,
+            'status' => Response::HTTP_OK,
             'mensagem' => 'Nenhum produto encontrado',
-        ], Response::HTTP_NOT_FOUND);
+        ], Response::HTTP_OK);
     }
 
     /**

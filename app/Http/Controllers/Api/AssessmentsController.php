@@ -11,8 +11,12 @@ use Illuminate\Http\Response;
 
 class AssessmentsController extends Controller
 {
+    /**
+     * Lista todas as avaliações de um usuário
+     */
     public function index()
     {
+        //TODO: Mudar para retornar apenas as avaliações do usuário logado
         $assessments = Assessments::all();
 
         if (!$assessments->isEmpty()) {
@@ -30,7 +34,7 @@ class AssessmentsController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Cria uma nova avaliação
      */
     public function store(AssessmentsRequest $request)
     {

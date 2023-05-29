@@ -19,7 +19,8 @@ class CardResource extends JsonResource
             "card_name" => $this->card_name,
             "card_number" => $this->card_number,
             "card_cvv" => $this->card_cvv,
-            "card_expiration_date" => $this->card_expiration_date
+            "card_expiration_date" => $this->card_expiration_date,
+            "user_id" => $this->user_id,
         ];
     }
 }

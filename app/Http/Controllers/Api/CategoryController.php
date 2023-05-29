@@ -9,10 +9,11 @@ use Illuminate\Http\Request;
 use App\Http\Requests\CategoriesRequest;
 use Illuminate\Http\Response;
 
+// TODO: Verificar se o usuário é um administrador em toda controller
 class CategoryController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Lista todas as categorias
      */
     public function index()
     {
@@ -37,7 +38,7 @@ class CategoryController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Cria uma nova categoria
      */
     public function store(CategoriesRequest $request)
     {
@@ -57,10 +58,12 @@ class CategoryController extends Controller
         ],  Response::HTTP_BAD_REQUEST);
     }
 
+    /**
+     * Atualiza uma categoria
+     */
     public function update(CategoriesRequest $request, Category $category)
     {
-
-        if (CategoriesRequest::find($category->id)) {
+        if (Category::find($category->id)) {
             $category->update($request->all());
 
             return response()->json([
@@ -76,7 +79,7 @@ class CategoryController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Apaga uma categoria
      */
     public function destroy(Category $category)
     {

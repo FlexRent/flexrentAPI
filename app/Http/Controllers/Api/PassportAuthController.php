@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UsersRequest;
 use Illuminate\Http\Request;
 
 use App\Models\User;
@@ -10,7 +11,10 @@ use Illuminate\Http\Response;
 
 class PassportAuthController extends Controller
 {
-    public function register(Request $request)
+    /**
+     * Cria um novo usuário
+     */
+    public function register(UsersRequest $request)
     {
         $user = User::create([
             'name' => $request->name,
@@ -27,6 +31,9 @@ class PassportAuthController extends Controller
         ], Response::HTTP_OK);
     }
 
+    /**
+     * Realiza o login do usuário
+     */
     public function login(Request $request)
     {
         $data = [
@@ -49,6 +56,9 @@ class PassportAuthController extends Controller
         }
     }
 
+    /**
+     * Realiza o logout do usuário
+     */
     public function logout(Request $request)
     {
         $accessToken = auth()->user()->token();
@@ -61,6 +71,10 @@ class PassportAuthController extends Controller
         ], Response::HTTP_OK);
     }
 
+
+    /**
+     * Retorna as informações do usuário logado
+     */
     public function userInfo()
     {
         $user = auth()->user();
