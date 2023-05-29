@@ -31,7 +31,8 @@ class AssessmentsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "assessments" => "required",
+            "assessments_user" => "required",
+            "assessments_product" => "required",
             "comments" => "required",
             "user_id" => "required",
             "product_id" => "required"
@@ -46,7 +47,8 @@ class AssessmentsRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            "assessments" => "assessments",
+            "assessments_user" => "assessments",
+            'assessments_product' => "assessments_product",
             "comments" => "comments",
             "user_id" => "user_id",
             "product_id" => "product_id"

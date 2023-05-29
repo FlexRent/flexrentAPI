@@ -55,6 +55,7 @@ class AddressesRequest extends FormRequest
     public function attributes(): array
     {
         return [
+            "address_title" => "address_title",
             "street" => "street",
             "number" => "number",
             "complement" => "complement",
