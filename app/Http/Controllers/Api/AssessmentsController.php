@@ -16,13 +16,15 @@ class AssessmentsController extends Controller
      */
     public function index()
     {
-        //TODO: Mudar para retornar apenas as avaliações do usuário logado
-        $assessments = Assessments::all();
+        $assessments = Assessments::where('user_id', auth()->user()->id)->paginate(10);
 
         if (!$assessments->isEmpty()) {
+            $totalUser = Assessments::where('user_id', auth()->user()->id)->avg('assessments_user');
+
             return response()->json([
                 'status' => 200,
                 'mensagem' => 'Lista de avaliações retornada',
+                'score' => $totalUser,
                 'assessments' => AssessmentsResource::collection($assessments)
             ], 200);
         }
@@ -32,6 +34,7 @@ class AssessmentsController extends Controller
             'mensagem' => 'Nenhuma avaliação encontrada'
         ], Response::HTTP_NOT_FOUND);
     }
+
 
     /**
      * Cria uma nova avaliação
