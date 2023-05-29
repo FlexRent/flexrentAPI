@@ -46,7 +46,8 @@ class ProductsRequest extends FormRequest
             "withdrawal_week" => "required",
             "delivery_week" => "required",
             "weekend_withdrawal" => "required",
-            "weekend_delivery" => "required"
+            "weekend_delivery" => "required",
+            "category_id" => "required",
         ];
     }
 
@@ -67,7 +68,9 @@ class ProductsRequest extends FormRequest
             "withdrawal_week" => "withdrawal_week",
             "delivery_week" => "delivery_week",
             "weekend_withdrawal" => "weekend_withdrawal",
-            "weekend_delivery" => "weekend_delivery"
+            "weekend_delivery" => "weekend_delivery",
+            "category_id" => "category_id",
+            "brand_id" => "brand_id"
         ];
     }
 

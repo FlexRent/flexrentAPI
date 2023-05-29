@@ -27,6 +27,8 @@ class ProductResource extends JsonResource
             'weekend_withdrawal' => $this->weekend_withdrawal,
             'weekend_delivery' => $this->weekend_delivery,
             'user_id' => $this->user_id,
+            'category_id' => $this->category_id,
+            'brand_id' => $this->brand_id,
         ];
     }
 }

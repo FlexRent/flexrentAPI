@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\ProductResource;
 use App\Http\Requests\ProductsRequest;
 
+// TODO: Implementar a media da nota do produto
 class ProductController extends Controller
 {
     /**
