@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Models\User;
+use Illuminate\Http\Response;
 
 class PassportAuthController extends Controller
 {
@@ -20,10 +21,10 @@ class PassportAuthController extends Controller
         $token = $user->createToken('LaravelAuthApp')->accessToken;
 
         return response()->json([
-            'status' => '200',
+            'status' => Response::HTTP_OK,
             'mensagem' => 'Usuário criado com sucesso',
             'token' => $token
-        ], 200);
+        ], Response::HTTP_OK);
     }
 
     public function login(Request $request)
@@ -36,15 +37,15 @@ class PassportAuthController extends Controller
         if (auth()->attempt($data)) {
             $token = auth()->user()->createToken('LaravelAuthApp')->accessToken;
             return response()->json([
-                'status' => '200',
+                'status' => Response::HTTP_OK,
                 'mensagem' => 'Token do usuário',
                 'token' => $token
-            ], 200);
+            ], Response::HTTP_OK);
         } else {
             return response()->json([
-                'status' => '401',
+                'status' => Response::HTTP_UNAUTHORIZED,
                 'mensagem' => 'Não autorizado',
-            ], 401);
+            ], Response::HTTP_UNAUTHORIZED);
         }
     }
 
@@ -55,18 +56,18 @@ class PassportAuthController extends Controller
         $token->revoke();
 
         return response()->json([
-            'status' => '200',
+            'status' => Response::HTTP_OK,
             'mensagem' => 'Logout realizado com sucesso',
-        ], 200);
+        ], Response::HTTP_OK);
     }
 
     public function userInfo()
     {
         $user = auth()->user();
         return response()->json([
-            'status' => '200',
+            'status' => Response::HTTP_OK,
             'mensagem' => 'Informações do usuário',
             'user' => $user
-        ], 200);
+        ], Response::HTTP_OK);
     }
 }
