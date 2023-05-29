@@ -85,18 +85,19 @@ class AddressesController extends Controller
      */
     public function destroy(Addresses $address)
     {
-        // if(é um administrador?){
-        $address->delete();
+
+        if ($address->user_id == auth()->user()->id) {
+            $address->delete();
+
+            return response()->json([
+                'status' => Response::HTTP_OK,
+                'mensagem' => 'Endereço deletado'
+            ], Response::HTTP_OK);
+        }
 
         return response()->json([
-            'status' => Response::HTTP_OK,
-            'mensagem' => 'Endereço deletado'
-        ], Response::HTTP_OK);
-        // }
-
-        // return response()->json([
-        //     'status' => Response::HTTP_UNAUTHORIZED,
-        //     'mensagem' => 'Você não tem permissão para deletar este produto'
-        // ], Response::HTTP_UNAUTHORIZED);
+            'status' => Response::HTTP_UNAUTHORIZED,
+            'mensagem' => 'Você não tem permissão para deletar este produto'
+        ], Response::HTTP_UNAUTHORIZED);
     }
 }
