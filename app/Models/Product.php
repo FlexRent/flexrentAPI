@@ -27,4 +27,9 @@ class Product extends Model
     {
         return $this->belongsTo(Address::class, 'address_id');
     }
+
+    public function ProductAssessments()
+    {
+        return $this->hasMany(Assessments::class, 'product_id');
+    }
 }

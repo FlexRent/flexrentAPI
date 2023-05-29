@@ -49,22 +49,23 @@ class ProductController extends Controller
      */
     public function showOne(Request $request)
     {
-        $productId = $request->product_id;
+        // $productId = $request->product_id;
 
-        if (!is_numeric($productId)) {
-            return response()->json([
-                'status' => Response::HTTP_BAD_REQUEST,
-                'mensagem' => 'ID do produto inválido',
-            ], Response::HTTP_BAD_REQUEST);
-        }
+        // if (!is_numeric($productId)) {
+        //     return response()->json([
+        //         'status' => Response::HTTP_BAD_REQUEST,
+        //         'mensagem' => 'ID do produto inválido',
+        //     ], Response::HTTP_BAD_REQUEST);
+        // }
 
-        $product = Product::find($productId);
+        $product = Product::find($request->product_id);
 
         if ($product) {
             return response()->json([
+                'qq' => $request->product_id,
                 'status' => Response::HTTP_OK,
                 'mensagem' => 'Produto encontrado',
-                'product' => $product
+                'product' => new ProductResource($product)
             ], Response::HTTP_OK);
         }
         return response()->json([
@@ -182,7 +183,8 @@ class ProductController extends Controller
 
             return response()->json([
                 'status' => Response::HTTP_OK,
-                'mensagem' => 'Produto atualizado com sucesso'
+                'mensagem' => 'Produto atualizado com sucesso',
+                'produto' => new ProductResource($product),
             ], Response::HTTP_OK);
         }
 

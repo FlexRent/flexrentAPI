@@ -29,6 +29,7 @@ class ProductResource extends JsonResource
             'user_id' => $this->user_id,
             'brand_name' => $this->brand_name,
             'category' => $this->ProductCategories,
+            'assessment' => $this->ProductAssessments->avg('assessments_product'),
             // 'brand' => $this->ProductBrands
         ];
     }
