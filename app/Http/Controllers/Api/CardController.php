@@ -7,6 +7,7 @@ use App\Http\Requests\CardsRequest;
 use App\Http\Resources\CardResource;
 use App\Models\Cards;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class CardController extends Controller
 {
@@ -20,7 +21,7 @@ class CardController extends Controller
         if (!$card->isEmpty()) {
             $paginationData = $card->toArray();
             return response()->json([
-                'status' => '200',
+                'status' => Response::HTTP_OK,
                 'mensagem' => 'Lista de cartões retornada',
                 'pagination' => [
                     'currentPage' => $paginationData['current_page'],
@@ -31,8 +32,13 @@ class CardController extends Controller
                     'next_page_url' => $paginationData['next_page_url'],
                 ],
                 'cartões' => CardResource::collection($card)
-            ], 200);
+            ], Response::HTTP_OK);
         }
+
+        return response()->json([
+            'status' => Response::HTTP_NOT_FOUND,
+            'mensagem' => 'Nenhum cartão encontrado',
+        ], Response::HTTP_NOT_FOUND);
     }
 
     /**
@@ -40,23 +46,20 @@ class CardController extends Controller
      */
     public function store(Request $request)
     {
-        $card = new Cards();
+        $card = new Cards($request->all($request->all()));
 
-        $card->card_name = $request->card_name;
-        $card->card_title = $request->card_title;
-        $card->card_number = $request->card_number;
-        $card->card_cvv = $request->card_cvv;
-        $card->card_expiration_date = $request->card_expiration_date;
-        $card->user_id = auth()->user()->id;
-
-
-        $card->save();
+        if ($card->save()) {
+            return response()->json([
+                'status' => Response::HTTP_OK,
+                'mensagem' => 'Cartão criado com sucesso',
+                'cartão' => $card
+            ], Response::HTTP_OK);
+        }
 
         return response()->json([
-            'status' => '200',
-            'mensagem' => 'Cartão criado com sucesso',
-            'cartão' => $card
-        ], 200);
+            'status' => Response::HTTP_BAD_REQUEST,
+            'mensagem' => 'Erro ao criar cartão',
+        ], Response::HTTP_BAD_REQUEST);
     }
 
     /**
@@ -64,27 +67,19 @@ class CardController extends Controller
      */
     public function update(CardsRequest $request, Cards $card)
     {
-        $user = Cards::where('user_id', auth()->user()->id)->first();
-
-        if ($card->user_id == $user->user_id) {
-            $card->card_name = $request->card_name;
-            $card->card_title = $request->card_title;
-            $card->card_number = $request->card_number;
-            $card->card_cvv = $request->card_cvv;
-            $card->card_expiration_date = $request->card_expiration_date;
-
-            $card->update();
-
+        if ($card->user_id == auth()->user()->id) {
+            $card->update($request->all());
             return response()->json([
-                'status' => '200',
+                'status' => Response::HTTP_OK,
                 'mensagem' => 'Cartão atualizado com sucesso'
-            ], 200);
-        } else {
-            return response()->json([
-                'status' => '401',
-                'mensagem' => 'Você não tem permissão para atualizar esse cartão'
-            ], 401);
+            ], Response::HTTP_OK);
         }
+
+
+        return response()->json([
+            'status' => Response::HTTP_UNAUTHORIZED,
+            'mensagem' => 'Você não tem permissão para atualizar esse cartão'
+        ], Response::HTTP_UNAUTHORIZED);
     }
 
     /**
@@ -92,19 +87,16 @@ class CardController extends Controller
      */
     public function destroy(Cards $card)
     {
-        $user = Cards::where('user_id', auth()->user()->id)->first();
-
-        if ($card->user_id == $user->user_id) {
+        if ($card->user_id == auth()->user()->id) {
             $card->delete();
             return response()->json([
-                'status' => '200',
+                'status' => Response::HTTP_OK,
                 'mensagem' => 'Cartão deletado com sucesso',
-            ], 200);
-        } else {
-            return response()->json([
-                'status' => '401',
-                'mensagem' => 'Você não tem permissão para deletar esse cartão',
-            ], 401);
+            ], Response::HTTP_OK);
         }
+        return response()->json([
+            'status' => Response::HTTP_UNAUTHORIZED,
+            'mensagem' => 'Você não tem permissão para deletar esse cartão',
+        ], Response::HTTP_UNAUTHORIZED);
     }
 }
