@@ -10,6 +10,7 @@ use App\Http\Resources\ProductResource;
 use App\Http\Requests\ProductsRequest;
 
 // TODO: Implementar a media da nota do produto
+// TODO: Implementar o relacionamento com categoria e marca
 class ProductController extends Controller
 {
     /**
