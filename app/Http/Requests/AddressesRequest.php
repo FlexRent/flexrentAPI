@@ -35,6 +35,7 @@ class AddressesRequest extends FormRequest
     public function rules(): array
     {
         return [
+            "address_title" => "required",
             "street" => "required",
             "number" => "required",
             "complement" => "required",
