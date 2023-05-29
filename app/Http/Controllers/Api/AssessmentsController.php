@@ -7,18 +7,26 @@ use Illuminate\Http\Request;
 use App\Models\Assessments;
 use App\Http\Resources\AssessmentsResource;
 use App\Http\Requests\AssessmentsRequest;
+use Illuminate\Http\Response;
 
 class AssessmentsController extends Controller
 {
     public function index()
     {
-        $assessment = Assessments::all();
+        $assessments = Assessments::all();
+
+        if (!$assessments->isEmpty()) {
+            return response()->json([
+                'status' => 200,
+                'mensagem' => 'Lista de avaliações retornada',
+                'assessments' => AssessmentsResource::collection($assessments)
+            ], 200);
+        }
 
         return response()->json([
-            'status' => 200,
-            'mensagem' => 'Lista de avaliações retornada',
-            'assessments' => AssessmentsResource::collection($assessment)
-        ], 200);
+            'status' => Response::HTTP_NOT_FOUND,
+            'mensagem' => 'Nenhuma avaliação encontrada'
+        ], Response::HTTP_NOT_FOUND);
     }
 
     /**
@@ -26,19 +34,20 @@ class AssessmentsController extends Controller
      */
     public function store(AssessmentsRequest $request)
     {
-        $assessment = new Assessments();
+        $assessment = new Assessments($request->all());
 
-        $assessment->assessments = $request->assessments;
-        $assessment->comments = $request->comments;
-        $assessment->user_id = $request->user_id;
-        $assessment->product_id = $request->product_id;
-        
-        $assessment->save();
+        if ($assessment->save()) {
+
+            return response()->json([
+                'status' => Response::HTTP_OK,
+                'mensagem' => 'Avaliação criada com sucesso',
+                'assessments' => new AssessmentsResource($assessment)
+            ], Response::HTTP_OK);
+        }
 
         return response()->json([
-            'status' => 200,
-            'mensagem' => 'Avaliação criada com sucesso',
-            'assessments' => new AssessmentsResource($assessment)
-        ], 200);
+            'status' => Response::HTTP_INTERNAL_SERVER_ERROR,
+            'mensagem' => 'Erro ao criar avaliação'
+        ], Response::HTTP_INTERNAL_SERVER_ERROR);
     }
 }
