@@ -39,4 +39,37 @@ class ProductsRequest extends FormRequest
 
         ];
     }
+
+    /**
+     * Pega os nomes de atributos personalizados para erros do validador.
+     *
+     * @return array<string, string>
+     */
+    public function attributes(): array
+    {
+        return [
+            "name" => "name",
+            "description" => "description",
+            "model" => "model",
+            "price" => "price",
+            "image" => "image",
+            "status" => "status",
+            "withdrawal_week" => "withdrawal_week",
+            "delivery_week" => "delivery_week",
+            "weekend_withdrawal" => "weekend_withdrawal",
+            "weekend_delivery" => "weekend_delivery"
+        ];
+    }
+
+    /**
+     * Pega as mensagens de erro para as regras de validação definidas.
+     *
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return [
+            "required" => "O campo ':attribute' é obrigatório.",
+        ];
+    }
 }

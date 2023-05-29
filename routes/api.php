@@ -21,19 +21,33 @@ use App\Http\Controllers\Api\PassportAuthController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group(['middleware' => 'auth:api'], function () {
+    // Usuário
+    Route::get('/user', [PassportAuthController::class, 'userInfo']);
+    Route::post('/logout', [PassportAuthController::class, 'logout']);
+
+    // Cartões
+    Route::apiResource('cards', CardController::class);
+
+    // Produtos
+    Route::get('/products/showOne', [ProductController::class, 'showOne']);
+    Route::get('/products/user', [ProductController::class, 'showProductsUser']);
+    Route::get('/products/filter', [ProductController::class, 'filter']);
+    Route::apiResource('products', ProductController::class);
+
+    // Categorias
+    Route::apiResource('categories', CategoryController::class);
+
+    // Avaliação
+    Route::apiResource('assessments', AssessmentsController::class);
+
+    // Endereços
+    Route::apiResource('addresses', AddressesController::class);
+
+    // Relacionamento entre Endereços - Usuario/Produto
+    Route::apiResource('address_user_product', AddressUserProductController::class);
 });
 
-
+// Autenticação
 Route::post('/register', [PassportAuthController::class, 'register']);
 Route::post('/login', [PassportAuthController::class, 'login']);
-Route::post('/logout', [PassportAuthController::class, 'logout'])->middleware('auth:api');
-Route::get('/user', [PassportAuthController::class, 'userInfo'])->middleware('auth:api');
-
-Route::apiResource('cards', CardController::class)->middleware('auth:api');
-Route::apiResource('products', ProductController::class)->middleware('auth:api');
-Route::apiResource('categories', CategoryController::class)->middleware('auth:api');
-Route::apiResource('assessments', AssessmentsController::class)->middleware('auth:api');
-Route::apiResource('addresses', AddressesController::class)->middleware('auth:api');
-Route::apiResource('address_user_product', AddressUserProductController::class)->middleware('auth:api');

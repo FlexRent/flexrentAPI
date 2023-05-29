@@ -42,4 +42,10 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    // Não tenho certeza se é necessário fazer esse relacionamento, para o caso de um usuário ter mais de um endereço
+    public function Products()
+    {
+        return $this->hasMany(Product::class, 'user_id');
+    }
 }
