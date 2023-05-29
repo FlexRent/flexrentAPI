@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CardsRequest;
+use App\Http\Resources\CardResource;
 use App\Models\Cards;
 use Illuminate\Http\Request;
 
@@ -14,14 +15,24 @@ class CardController extends Controller
      */
     public function index()
     {
-        $user = Cards::where('user_id', auth()->user()->id)->get();
-        $card = Cards::find($user);
+        $card = Cards::where('user_id', auth()->user()->id)->paginate(10);
 
-        return response()->json([
-            'status' => 200,
-            'mensagem' => 'Lista de cartões retornada',
-            'cards' => $card
-        ], 200);
+        if (!$card->isEmpty()) {
+            $paginationData = $card->toArray();
+            return response()->json([
+                'status' => '200',
+                'mensagem' => 'Lista de cartões retornada',
+                'pagination' => [
+                    'currentPage' => $paginationData['current_page'],
+                    'totalPages' => $paginationData['last_page'],
+                    'totalProducts' => $paginationData['total'],
+                    'perPage' => $paginationData['per_page'],
+                    'prev_page_url' => $paginationData['prev_page_url'],
+                    'next_page_url' => $paginationData['next_page_url'],
+                ],
+                'cartões' => CardResource::collection($card)
+            ], 200);
+        }
     }
 
     /**
