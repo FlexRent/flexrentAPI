@@ -4,6 +4,15 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * Class AssessmentsRequest
+ * @package App\Http\Requests
+ *
+ * @property string $assessments
+ * @property string $comments
+ * @property int $user_id
+ * @property int $product_id
+ */
 class AssessmentsRequest extends FormRequest
 {
     /**
@@ -22,10 +31,39 @@ class AssessmentsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "assessments" => "required",
+            "assessments_user" => "required",
+            "assessments_product" => "required",
             "comments" => "required",
             "user_id" => "required",
             "product_id" => "required"
+        ];
+    }
+
+    /**
+     * Pega os nomes de atributos personalizados para erros do validador.
+     *
+     * @return array<string, string>
+     */
+    public function attributes(): array
+    {
+        return [
+            "assessments_user" => "assessments",
+            'assessments_product' => "assessments_product",
+            "comments" => "comments",
+            "user_id" => "user_id",
+            "product_id" => "product_id"
+        ];
+    }
+
+    /**
+     * Pega as mensagens de erro para as regras de validação definidas.
+     *
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return [
+            "required" => "O campo ':attribute' é obrigatório.",
         ];
     }
 }

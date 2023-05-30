@@ -1,10 +1,24 @@
 <?php
 
-
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * Class ProductsRequest
+ * @package App\Http\Requests
+ *
+ * @property string $name
+ * @property string $description
+ * @property string $model
+ * @property float $price
+ * @property string $image
+ * @property string $status
+ * @property string $withdrawal_week
+ * @property string $delivery_week
+ * @property string $weekend_withdrawal
+ * @property string $weekend_delivery
+ */
 class ProductsRequest extends FormRequest
 {
     /**
@@ -32,11 +46,9 @@ class ProductsRequest extends FormRequest
             "withdrawal_week" => "required",
             "delivery_week" => "required",
             "weekend_withdrawal" => "required",
-            "weekend_delivery" => "required"
-            // "imame" => "required"
-            // "imame" => "required"
-            // "imame" => "required"
-
+            "weekend_delivery" => "required",
+            "brand_name" => "required",
+            "category_id" => "required",
         ];
     }
 
@@ -57,7 +69,10 @@ class ProductsRequest extends FormRequest
             "withdrawal_week" => "withdrawal_week",
             "delivery_week" => "delivery_week",
             "weekend_withdrawal" => "weekend_withdrawal",
-            "weekend_delivery" => "weekend_delivery"
+            "weekend_delivery" => "weekend_delivery",
+            "brand_name" => "brand_name",
+            "category_id" => "category_id",
+            // "brand_id" => "brand_id"
         ];
     }
 

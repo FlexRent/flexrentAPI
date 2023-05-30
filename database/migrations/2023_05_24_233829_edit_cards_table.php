@@ -29,7 +29,7 @@ return new class extends Migration
     {
         Schema::table('cards', function (Blueprint $table) {
             $table->integer('card_number')->change();
-            $table->date('due_date')->change();
+            $table->date('card_expiration_date')->change();
             $table->renameColumn('card_cvv', 'cvv');
             $table->renameColumn('card_expiration_date', 'due_date');
             $table->dropColumn('card_title');

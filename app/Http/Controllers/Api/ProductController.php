@@ -9,6 +9,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\ProductResource;
 use App\Http\Requests\ProductsRequest;
 
+// TODO: Implementar a media da nota do produto
+// TODO: Implementar o relacionamento com categoria e marca
 class ProductController extends Controller
 {
     /**
@@ -37,9 +39,9 @@ class ProductController extends Controller
         }
 
         return response()->json([
-            'status' => Response::HTTP_NOT_FOUND,
+            'status' => Response::HTTP_OK,
             'mensagem' => 'Nenhum produto encontrado',
-        ], Response::HTTP_NOT_FOUND);
+        ], Response::HTTP_OK);
     }
 
     /**
@@ -47,28 +49,29 @@ class ProductController extends Controller
      */
     public function showOne(Request $request)
     {
-        $productId = $request->product_id;
+        // $productId = $request->product_id;
 
-        if (!is_numeric($productId)) {
-            return response()->json([
-                'status' => Response::HTTP_BAD_REQUEST,
-                'mensagem' => 'ID do produto inválido',
-            ], Response::HTTP_BAD_REQUEST);
-        }
+        // if (!is_numeric($productId)) {
+        //     return response()->json([
+        //         'status' => Response::HTTP_BAD_REQUEST,
+        //         'mensagem' => 'ID do produto inválido',
+        //     ], Response::HTTP_BAD_REQUEST);
+        // }
 
-        $product = Product::find($productId);
+        $product = Product::find($request->product_id);
 
         if ($product) {
             return response()->json([
+                'qq' => $request->product_id,
                 'status' => Response::HTTP_OK,
                 'mensagem' => 'Produto encontrado',
-                'product' => $product
+                'product' => new ProductResource($product)
             ], Response::HTTP_OK);
         }
         return response()->json([
-            'status' => Response::HTTP_NOT_FOUND,
+            'status' => Response::HTTP_OK,
             'mensagem' => 'Nenhum produto encontrado',
-        ], Response::HTTP_NOT_FOUND);
+        ], Response::HTTP_OK);
     }
 
     /**
@@ -97,11 +100,14 @@ class ProductController extends Controller
         }
 
         return response()->json([
-            'status' => Response::HTTP_NOT_FOUND,
+            'status' => Response::HTTP_OK,
             'mensagem' => 'Nenhum produto encontrado',
-        ], Response::HTTP_NOT_FOUND);
+        ], Response::HTTP_OK);
     }
 
+    /**
+     * Lista produtos com filtros
+     */
     public function filter(Request $request)
     {
         $query = Product::query();
@@ -140,9 +146,9 @@ class ProductController extends Controller
             ], Response::HTTP_OK);
         }
         return response()->json([
-            'status' => Response::HTTP_NOT_FOUND,
+            'status' => Response::HTTP_OK,
             'mensagem' => 'Nenhum produto encontrado',
-        ], Response::HTTP_NOT_FOUND);
+        ], Response::HTTP_OK);
     }
 
     /**
@@ -151,7 +157,7 @@ class ProductController extends Controller
     public function store(ProductsRequest $request)
     {
         $product = new Product($request->all());
-        $product->user_id = auth()->user()->id;
+        $product->user_id = auth()->user()->id; // acho que nao precisa disso
 
         if ($product->save()) {
             return response()->json([
@@ -162,9 +168,9 @@ class ProductController extends Controller
         }
 
         return response()->json([
-            'status' => Response::HTTP_INTERNAL_SERVER_ERROR,
+            'status' => Response::HTTP_BAD_REQUEST,
             'mensagem' => 'Erro ao criar produto',
-        ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        ], Response::HTTP_BAD_REQUEST);
     }
 
     /**
@@ -177,7 +183,8 @@ class ProductController extends Controller
 
             return response()->json([
                 'status' => Response::HTTP_OK,
-                'mensagem' => 'Produto atualizado com sucesso'
+                'mensagem' => 'Produto atualizado com sucesso',
+                'produto' => new ProductResource($product),
             ], Response::HTTP_OK);
         }
 
