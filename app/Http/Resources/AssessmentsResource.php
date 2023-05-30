@@ -15,8 +15,9 @@ class AssessmentsResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id, 
-            'assessments' => $this->assessments,
+            'id' => $this->id,
+            'assessments_user' => $this->assessments_user,
+            'assessments_product' => $this->assessments_product,
             'comments' => $this->comments,
             'user_id' => $this->user_id,
             'product_id' => $this->product_id

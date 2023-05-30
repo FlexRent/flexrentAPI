@@ -7,69 +7,92 @@ use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Http\Resources\CategoryResource;
 use App\Http\Requests\CategoriesRequest;
+use Illuminate\Http\Response;
 
+// TODO: Verificar se o usuário é um administrador em toda controller
 class CategoryController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Lista todas as categorias
      */
     public function index()
     {
-        $categories = Category::all();
+        $categories = Category::paginate(10);
 
-        return response()->json([
-            'status' => 200,
-            'mensagem' => 'Lista de produtos retornada',
-            'categories' => CategoryResource::collection($categories)
-        ], 200);
+        if (!$categories->isEmpty()) {
+            $paginationData = $categories->toArray();
+            return response()->json([
+                'status' =>  Response::HTTP_OK,
+                'mensagem' => 'Lista de produtos retornada',
+                'pagination' => [
+                    'currentPage' => $paginationData['current_page'],
+                    'totalPages' => $paginationData['last_page'],
+                    'totalProducts' => $paginationData['total'],
+                    'perPage' => $paginationData['per_page'],
+                    'prev_page_url' => $paginationData['prev_page_url'],
+                    'next_page_url' => $paginationData['next_page_url'],
+                ],
+                'categories' => CategoryResource::collection($categories)
+            ],  Response::HTTP_OK);
+        }
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Cria uma nova categoria
      */
     public function store(CategoriesRequest $request)
     {
-        $category = new Category();
+        $category = new Category($request->all());
 
-        $category->name = $request->name;
-        $category->description = $request->description;
-        
-        $category->save();
+        if ($category->save()) {
+            return response()->json([
+                'status' =>  Response::HTTP_OK,
+                'mensagem' => 'Categoria criada com sucesso',
+                'categories' => new CategoryResource($category)
+            ],  Response::HTTP_OK);
+        }
 
         return response()->json([
-            'status' => 200,
-            'mensagem' => 'Categoria criada com sucesso',
-            'categories' => new CategoryResource($category)
-        ], 200);
-    }
-
-    public function update (CategoriesRequest $request, Category $category){
-
-        $category = Category::find($category->id);
-
-        $category->name = $request->name;
-        $category->description = $request->description;
-
-        $category->update();
-
-        return response() -> json([
-            'status' => '200',
-            'mensagem' => 'Categoria atualizada com sucesso'
-        ], 200);
-
-
+            'status' =>  Response::HTTP_BAD_REQUEST,
+            'mensagem' => 'Erro ao criar categoria',
+        ],  Response::HTTP_BAD_REQUEST);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Atualiza uma categoria
+     */
+    public function update(CategoriesRequest $request, Category $category)
+    {
+        if (Category::find($category->id)) {
+            $category->update($request->all());
+
+            return response()->json([
+                'status' => Response::HTTP_OK,
+                'mensagem' => 'Categoria atualizada com sucesso'
+            ],  Response::HTTP_OK);
+        }
+
+        return response()->json([
+            'status' => Response::HTTP_NOT_FOUND,
+            'mensagem' => 'Erro ao atualizar categoria'
+        ],  Response::HTTP_NOT_FOUND);
+    }
+
+    /**
+     * Apaga uma categoria
      */
     public function destroy(Category $category)
     {
+        // if(é um administrador?){
         $category->delete();
-
-        return response() -> json([
-            'status' => '200',
+        return response()->json([
+            'status' => Response::HTTP_OK,
             'mensagem' => 'Categoria deletada'
-        ], 200);
+        ],  Response::HTTP_OK);
+
+        // return response()->json([
+        //     'status' => Response::HTTP_UNAUTHORIZED,
+        //     'mensagem' => 'Você não tem permissão para deletar essa categoria'
+        // ],  Response::HTTP_UNAUTHORIZED);
     }
 }

@@ -40,6 +40,8 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::apiResource('categories', CategoryController::class);
 
     // Avaliação
+    Route::get('/assessments/user', [AssessmentsController::class, 'user']);
+    Route::get('/assessments/product', [AssessmentsController::class, 'product']);
     Route::apiResource('assessments', AssessmentsController::class);
 
     // Endereços
