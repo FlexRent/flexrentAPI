@@ -30,12 +30,16 @@ class UsersRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|min:4',
+            'first_name' => 'required|min:4',
+            'last_name' => 'required|min:4',
+            'cpf' => 'required',
+            'gender' => 'required',
+            'phone' => 'required',
+            "birth_date" => 'required',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:8'
         ];
     }
-
     /**
      * Get custom attribute names for validator errors.
      *
@@ -44,9 +48,14 @@ class UsersRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'name' => 'name',
+            'first_name' => 'first_name',
+            'last_name' => 'last_name',
+            'cpf' => 'cpf',
+            'gender' => 'gender',
+            'phone' => 'phone',
+            "birth_date" => "birth_date",
             'email' => 'email',
-            'password' => 'password'
+            'password' => 'password',
         ];
     }
 

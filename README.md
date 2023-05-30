@@ -20,6 +20,9 @@
 - CREATE DATABASE FlexRentall;
 - USE FlexRentall;
 
+- Criar chaves do passport
+`php artisan passport:install`
+
 - Rodar Migration
 `php artisan migrate`
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UsersRequest;
+use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 
 use App\Models\User;
@@ -17,7 +18,12 @@ class PassportAuthController extends Controller
     public function register(UsersRequest $request)
     {
         $user = User::create([
-            'name' => $request->name,
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'cpf' => $request->cpf,
+            'gender' => $request->gender,
+            'phone' => $request->phone,
+            'birth_date' => $request->birth_date,
             'email' => $request->email,
             'password' => bcrypt($request->password)
         ]);
@@ -42,7 +48,10 @@ class PassportAuthController extends Controller
         ];
 
         if (auth()->attempt($data)) {
-            $token = auth()->user()->createToken('LaravelAuthApp')->accessToken;
+            $user = auth()->user();
+            $token = $user->createToken('LaravelAuthApp')->accessToken;
+            $user->update(['remember_token' => $token]);
+
             return response()->json([
                 'status' => Response::HTTP_OK,
                 'mensagem' => 'Token do usuário',
@@ -81,7 +90,7 @@ class PassportAuthController extends Controller
         return response()->json([
             'status' => Response::HTTP_OK,
             'mensagem' => 'Informações do usuário',
-            'user' => $user
+            'user' => new UserResource($user)
         ], Response::HTTP_OK);
     }
 }
