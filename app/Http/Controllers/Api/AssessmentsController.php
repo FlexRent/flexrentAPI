@@ -14,24 +14,63 @@ class AssessmentsController extends Controller
     /**
      * Lista todas as avaliações de um usuário
      */
-    public function index()
+    public function user()
     {
         $assessments = Assessments::where('user_id', auth()->user()->id)->paginate(10);
 
         if (!$assessments->isEmpty()) {
-            $totalUser = Assessments::where('user_id', auth()->user()->id)->avg('assessments_user');
+            $scoreUser = Assessments::where('user_id', auth()->user()->id)->avg('assessments_user');
+            $paginationData = $assessments->toArray();
 
             return response()->json([
-                'status' => 200,
-                'mensagem' => 'Lista de avaliações retornada',
-                'score' => $totalUser,
+                'status' => Response::HTTP_OK,
+                'mensagem' => 'Lista de avaliações do cliente',
+                'pagination' => [
+                    'currentPage' => $paginationData['current_page'],
+                    'totalPages' => $paginationData['last_page'],
+                    'totalProducts' => $paginationData['total'],
+                    'perPage' => $paginationData['per_page'],
+                    'prev_page_url' => $paginationData['prev_page_url'],
+                    'next_page_url' => $paginationData['next_page_url'],
+                ],
+                'score' => $scoreUser,
                 'assessments' => AssessmentsResource::collection($assessments)
-            ], 200);
+            ], Response::HTTP_OK);
         }
 
         return response()->json([
             'status' => Response::HTTP_NOT_FOUND,
-            'mensagem' => 'Nenhuma avaliação encontrada'
+            'mensagem' => 'Nenhuma avaliação de usuario encontrada'
+        ], Response::HTTP_NOT_FOUND);
+    }
+
+    public function product(Request $request)
+    {
+        $assessments = Assessments::where('product_id', $request->header('product_id'))->paginate(10);
+
+        if (!$assessments->isEmpty()) {
+            $scoreProduct = Assessments::where('product_id', $request->header('product_id'))->avg('assessments_product');
+            $paginationData = $assessments->toArray();
+
+            return response()->json([
+                'status' => Response::HTTP_OK,
+                'mensagem' => 'Lista de avaliações do produto',
+                'pagination' => [
+                    'currentPage' => $paginationData['current_page'],
+                    'totalPages' => $paginationData['last_page'],
+                    'totalProducts' => $paginationData['total'],
+                    'perPage' => $paginationData['per_page'],
+                    'prev_page_url' => $paginationData['prev_page_url'],
+                    'next_page_url' => $paginationData['next_page_url'],
+                ],
+                'score' => $scoreProduct,
+                'assessments' => AssessmentsResource::collection($assessments)
+            ], Response::HTTP_OK);
+        }
+
+        return response()->json([
+            'status' => Response::HTTP_NOT_FOUND,
+            'mensagem' => 'Nenhuma avaliação de produto encontrada'
         ], Response::HTTP_NOT_FOUND);
     }
 
