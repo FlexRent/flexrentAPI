@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('cpf')->after('last_name');
             $table->enum('gender', ['M', 'F', 'O'])->after('cpf');
             $table->string('phone')->after('gender');
-            $table->date('birth_date')->after('phone');
+            $table->date('birth_date')->nullable()->after('phone');
             $table->longText('remember_token')->nullable()->change();
         });
     }

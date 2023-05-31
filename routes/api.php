@@ -7,6 +7,8 @@ use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\AssessmentsController;
 use App\Http\Controllers\Api\AddressesController;
+use App\Http\Controllers\Api\AddressUserProductController;
+use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\PassportAuthController;
 
 /*
@@ -44,6 +46,13 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     // Endereços
     Route::apiResource('addresses', AddressesController::class);
+
+    // Relacionamento entre Endereços - Usuario/Produto
+    Route::apiResource('address_user_product', AddressUserProductController::class);
+
+    // Pedido de aluguel
+    Route::get('cart/user', [CartController::class, 'showCartUser']);
+    Route::apiResource('cart', CartController::class);
 });
 
 // Autenticação

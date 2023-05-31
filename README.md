@@ -33,4 +33,4 @@
 `php artisan make:migration nome-tabela_table`
 
 - Editar Migration
-`php artisan make:migration edit_nome-tabela_table --table=nome-tabela`
+`php artisan make:migration update_nome_tabela --table=nome`
