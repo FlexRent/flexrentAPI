@@ -26,6 +26,34 @@ class CartController extends Controller
         ], 200);
     }
 
+    public function showCartUser()
+    {
+        $carts = Cart::where('user_id', auth()->user()->id)->paginate(10);
+
+        if (!$carts->isEmpty()) {
+            $paginationData = $carts->toArray();
+
+            return response()->json([
+                'status' => Response::HTTP_OK,
+                'mensagem' => 'Lista de peidos de alguel retornada',
+                'pagination' => [
+                    'currentPage' => $paginationData['current_page'],
+                    'totalPages' => $paginationData['last_page'],
+                    'totalPedidosDeAluguel' => $paginationData['total'],
+                    'perPage' => $paginationData['per_page'],
+                    'prev_page_url' => $paginationData['prev_page_url'],
+                    'next_page_url' => $paginationData['next_page_url'],
+                ],
+                'pedidos de aluguel' => CartResource::collection($carts)
+            ], Response::HTTP_OK);
+        }
+
+        return response()->json([
+            'status' => Response::HTTP_OK,
+            'mensagem' => 'Nenhum pedidos de aluguel encontrado',
+        ], Response::HTTP_OK);
+    }
+
     /**
      * Store a newly created resource in storage.
      */
