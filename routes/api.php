@@ -20,7 +20,7 @@ use App\Http\Controllers\Api\PassportAuthController;
 |
 */
 
-Route::group(['middleware' => 'auth:api'], function () {
+//Route::group(['middleware' => 'auth:api'], function () {
     // Usuário
     Route::get('/user', [PassportAuthController::class, 'userInfo']);
     Route::post('/logout', [PassportAuthController::class, 'logout']);
@@ -44,7 +44,7 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     // Endereços
     Route::apiResource('addresses', AddressesController::class);
-});
+//});
 
 // Autenticação
 Route::post('/register', [PassportAuthController::class, 'register']);

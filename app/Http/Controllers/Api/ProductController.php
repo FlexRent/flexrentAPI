@@ -157,7 +157,7 @@ class ProductController extends Controller
     public function store(ProductsRequest $request)
     {
         $product = new Product($request->all());
-        $product->user_id = auth()->user()->id; // acho que nao precisa disso
+        // $product->user_id = auth()->user()->id; // acho que nao precisa disso
 
         if ($product->save()) {
             return response()->json([
@@ -199,18 +199,18 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        if ($product->user_id == auth()->user()->id) {
+        // if ($product->user_id == auth()->user()->id) {
             $product->delete();
 
             return response()->json([
                 'status' => Response::HTTP_OK,
                 'mensagem' => 'Produto deletado'
             ], Response::HTTP_OK);
-        }
+        // }
 
-        return response()->json([
-            'status' => Response::HTTP_UNAUTHORIZED,
-            'mensagem' => 'Você não tem permissão para deletar este produto'
-        ], Response::HTTP_UNAUTHORIZED);
+        // return response()->json([
+        //     'status' => Response::HTTP_UNAUTHORIZED,
+        //     'mensagem' => 'Você não tem permissão para deletar este produto'
+        // ], Response::HTTP_UNAUTHORIZED);
     }
 }
