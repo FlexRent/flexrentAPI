@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Models\Cart;
 use App\Http\Resources\CartResource;
 use App\Http\Requests\CartRequest;
-use Illuminate\Http\Response;
 
 
 class CartController extends Controller
@@ -35,7 +35,8 @@ class CartController extends Controller
 
             return response()->json([
                 'status' => Response::HTTP_OK,
-                'mensagem' => 'Lista de peidos de alguel retornada',
+                'mensagem' => 'Lista de pedidos de aluguel retornada',
+                'nome' => auth()->user()->id,
                 'pagination' => [
                     'currentPage' => $paginationData['current_page'],
                     'totalPages' => $paginationData['last_page'],
@@ -61,7 +62,6 @@ class CartController extends Controller
     {
         $cart = new Cart($request->all());
         $cart->user_id = auth()->user()->id;
-
         
         if( $cart->save() ){
 

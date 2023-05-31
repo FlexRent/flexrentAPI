@@ -51,7 +51,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::apiResource('address_user_product', AddressUserProductController::class);
 
     // Pedido de aluguel
-    Route::get('cart/user', [CartController::class, 'showCartsUser']);
+    Route::get('cart/user', [CartController::class, 'showCartUser']);
     Route::apiResource('cart', CartController::class);
 });
 
