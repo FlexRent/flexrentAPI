@@ -178,7 +178,7 @@ class ProductController extends Controller
      */
     public function update(ProductsRequest $request, Product $product)
     {
-        if ($product->user_id == auth()->user()->id) {
+        // if ($product->user_id == auth()->user()->id) {
             $product->update($request->all());
 
             return response()->json([
@@ -186,12 +186,12 @@ class ProductController extends Controller
                 'mensagem' => 'Produto atualizado com sucesso',
                 'produto' => new ProductResource($product),
             ], Response::HTTP_OK);
-        }
+        // }
 
-        return response()->json([
-            'status' => Response::HTTP_UNAUTHORIZED,
-            'mensagem' => 'Você não tem permissão para atualizar este produto'
-        ], Response::HTTP_UNAUTHORIZED);
+        // return response()->json([
+        //     'status' => Response::HTTP_UNAUTHORIZED,
+        //     'mensagem' => 'Você não tem permissão para atualizar este produto'
+        // ], Response::HTTP_UNAUTHORIZED);
     }
 
     /**
