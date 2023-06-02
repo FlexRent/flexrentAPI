@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\AssessmentsController;
 use App\Http\Controllers\Api\AddressesController;
 use App\Http\Controllers\Api\PassportAuthController;
+use Mockery\Generator\StringManipulation\Pass\Pass;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,3 +50,4 @@ use App\Http\Controllers\Api\PassportAuthController;
 // Autenticação
 Route::post('/register', [PassportAuthController::class, 'register']);
 Route::post('/login', [PassportAuthController::class, 'login']);
+Route::patch('/recoverPassword', [PassportAuthController::class, 'recoverPassword']);
