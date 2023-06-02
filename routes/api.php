@@ -21,7 +21,7 @@ use Mockery\Generator\StringManipulation\Pass\Pass;
 |
 */
 
-//Route::group(['middleware' => 'auth:api'], function () {
+Route::group(['middleware' => 'auth:api'], function () {
     // Usuário
     Route::get('/user', [PassportAuthController::class, 'userInfo']);
     Route::post('/logout', [PassportAuthController::class, 'logout']);
@@ -45,7 +45,7 @@ use Mockery\Generator\StringManipulation\Pass\Pass;
 
     // Endereços
     Route::apiResource('addresses', AddressesController::class);
-//});
+});
 
 // Autenticação
 Route::post('/register', [PassportAuthController::class, 'register']);

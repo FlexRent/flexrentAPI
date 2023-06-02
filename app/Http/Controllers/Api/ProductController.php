@@ -18,7 +18,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::paginate(10); // 10 produtos por página
+        $products = Product::paginate(10);
 
         if (!$products->isEmpty()) {
             $paginationData = $products->toArray();
@@ -49,14 +49,14 @@ class ProductController extends Controller
      */
     public function showOne(Request $request)
     {
-        // $productId = $request->product_id;
+        $productId = $request->product_id;
 
-        // if (!is_numeric($productId)) {
-        //     return response()->json([
-        //         'status' => Response::HTTP_BAD_REQUEST,
-        //         'mensagem' => 'ID do produto inválido',
-        //     ], Response::HTTP_BAD_REQUEST);
-        // }
+        if (!is_numeric($productId)) {
+            return response()->json([
+                'status' => Response::HTTP_BAD_REQUEST,
+                'mensagem' => 'ID do produto inválido',
+            ], Response::HTTP_BAD_REQUEST);
+        }
 
         $product = Product::find($request->product_id);
 
@@ -157,7 +157,7 @@ class ProductController extends Controller
     public function store(ProductsRequest $request)
     {
         $product = new Product($request->all());
-        // $product->user_id = auth()->user()->id; // acho que nao precisa disso
+        $product->user_id = auth()->user()->id;
 
         if ($product->save()) {
             return response()->json([
@@ -178,7 +178,7 @@ class ProductController extends Controller
      */
     public function update(ProductsRequest $request, Product $product)
     {
-        // if ($product->user_id == auth()->user()->id) {
+        if ($product->user_id == auth()->user()->id) {
             $product->update($request->all());
 
             return response()->json([
@@ -186,12 +186,12 @@ class ProductController extends Controller
                 'mensagem' => 'Produto atualizado com sucesso',
                 'produto' => new ProductResource($product),
             ], Response::HTTP_OK);
-        // }
+        }
 
-        // return response()->json([
-        //     'status' => Response::HTTP_UNAUTHORIZED,
-        //     'mensagem' => 'Você não tem permissão para atualizar este produto'
-        // ], Response::HTTP_UNAUTHORIZED);
+        return response()->json([
+            'status' => Response::HTTP_UNAUTHORIZED,
+            'mensagem' => 'Você não tem permissão para atualizar este produto'
+        ], Response::HTTP_UNAUTHORIZED);
     }
 
     /**
@@ -199,18 +199,18 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        // if ($product->user_id == auth()->user()->id) {
+        if ($product->user_id == auth()->user()->id) {
             $product->delete();
 
             return response()->json([
                 'status' => Response::HTTP_OK,
                 'mensagem' => 'Produto deletado'
             ], Response::HTTP_OK);
-        // }
+        }
 
-        // return response()->json([
-        //     'status' => Response::HTTP_UNAUTHORIZED,
-        //     'mensagem' => 'Você não tem permissão para deletar este produto'
-        // ], Response::HTTP_UNAUTHORIZED);
+        return response()->json([
+            'status' => Response::HTTP_UNAUTHORIZED,
+            'mensagem' => 'Você não tem permissão para deletar este produto'
+        ], Response::HTTP_UNAUTHORIZED);
     }
 }
