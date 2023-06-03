@@ -41,7 +41,7 @@ class ProductsRequest extends FormRequest
             "description" => "required",
             "model" => "required",
             "price" => "required",
-            "image" => "required",
+            "images" => "required",
             "status" => "required",
             "withdrawal_week" => "required",
             "delivery_week" => "required",
@@ -57,34 +57,34 @@ class ProductsRequest extends FormRequest
      *
      * @return array<string, string>
      */
-    public function attributes(): array
-    {
-        return [
-            "name" => "name",
-            "description" => "description",
-            "model" => "model",
-            "price" => "price",
-            "image" => "image",
-            "status" => "status",
-            "withdrawal_week" => "withdrawal_week",
-            "delivery_week" => "delivery_week",
-            "weekend_withdrawal" => "weekend_withdrawal",
-            "weekend_delivery" => "weekend_delivery",
-            "brand_name" => "brand_name",
-            "category_id" => "category_id",
-            // "brand_id" => "brand_id"
-        ];
-    }
+    // public function attributes(): array
+    // {
+    //     return [
+    //         "name" => "name",
+    //         "description" => "description",
+    //         "model" => "model",
+    //         "price" => "price",
+    //         "image" => "image",
+    //         "status" => "status",
+    //         "withdrawal_week" => "withdrawal_week",
+    //         "delivery_week" => "delivery_week",
+    //         "weekend_withdrawal" => "weekend_withdrawal",
+    //         "weekend_delivery" => "weekend_delivery",
+    //         "brand_name" => "brand_name",
+    //         "category_id" => "category_id",
+    //         // "brand_id" => "brand_id"
+    //     ];
+    // }
 
-    /**
-     * Pega as mensagens de erro para as regras de validação definidas.
-     *
-     * @return array<string, string>
-     */
-    public function messages(): array
-    {
-        return [
-            "required" => "O campo ':attribute' é obrigatório.",
-        ];
-    }
+    // /**
+    //  * Pega as mensagens de erro para as regras de validação definidas.
+    //  *
+    //  * @return array<string, string>
+    //  */
+    // public function messages(): array
+    // {
+    //     return [
+    //         "required" => "O campo ':attribute' é obrigatório.",
+    //     ];
+    // }
 }

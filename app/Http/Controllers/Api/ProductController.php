@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Models\Product;
+use App\Models\ProductImage;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ProductResource;
 use App\Http\Requests\ProductsRequest;
+use Illuminate\Support\Facades\Storage;
 
 // TODO: Implementar a media da nota do produto
 // TODO: Implementar o relacionamento com categoria e marca
@@ -158,15 +160,25 @@ class ProductController extends Controller
     {
         $product = new Product($request->all());
         $product->user_id = auth()->user()->id; // acho que nao precisa disso
-
+        
         if ($product->save()) {
+
+            foreach($request->images as $image){
+                $url = Storage::putFile("img", $image);
+                ProductImage::create([
+                    'product_id' => $product->id,
+                    'image' => $url
+                ]);
+            }
+
             return response()->json([
                 'status' => Response::HTTP_OK,
                 'mensagem' => 'Produto criado com sucesso',
                 'produto' => new ProductResource($product),
             ], Response::HTTP_OK);
         }
-
+        
+        
         return response()->json([
             'status' => Response::HTTP_BAD_REQUEST,
             'mensagem' => 'Erro ao criar produto',

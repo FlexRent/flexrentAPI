@@ -20,7 +20,7 @@ class ProductResource extends JsonResource
             'description' => $this->description,
             'model' => $this->model,
             'price' => $this->price,
-            'image' => $this->image,
+            'images' => $this->ProductImage,
             'status' => $this->status,
             'withdrawal_week' => $this->withdrawal_week,
             'delivery_week' => $this->delivery_week,
@@ -34,3 +34,5 @@ class ProductResource extends JsonResource
         ];
     }
 }
+
+// 'image' => $this->image,
