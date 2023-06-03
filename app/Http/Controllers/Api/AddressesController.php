@@ -104,7 +104,7 @@ class AddressesController extends Controller
 
         return response()->json([
             'status' => Response::HTTP_UNAUTHORIZED,
-            'mensagem' => 'Você não tem permissão para deletar este produto'
+            'mensagem' => 'Você não tem permissão para deletar este endereço'
         ], Response::HTTP_UNAUTHORIZED);
     }
 }
