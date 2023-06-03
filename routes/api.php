@@ -58,3 +58,4 @@ Route::group(['middleware' => 'auth:api'], function () {
 // Autenticação
 Route::post('/register', [PassportAuthController::class, 'register']);
 Route::post('/login', [PassportAuthController::class, 'login']);
+Route::patch('/recoverPassword', [PassportAuthController::class, 'recoverPassword']);
