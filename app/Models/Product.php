@@ -11,7 +11,7 @@ class Product extends Model
 
     protected $table = 'products';
     protected $primaryKey = 'id';
-    protected $fillable = ['name', 'description', 'model', 'price', 'image', 'status', 'withdrawal_week', 'delivery_week', 'weekend_withdrawal', 'weekend_delivery', 'brand_id', 'brand_name', 'category_id', 'address_id'];
+    protected $fillable = ['name', 'description', 'model', 'daily_price', 'image', 'status', 'custom_time_from', 'custom_time_until', 'product_price', 'any_time', 'rent_day', 'brand_id', 'brand_name', 'category_id', 'address_id'];
 
     public function ProductBrands()
     {
@@ -31,5 +31,9 @@ class Product extends Model
     public function ProductAssessments()
     {
         return $this->hasMany(Assessments::class, 'product_id');
+    }
+
+    public function ProductImage(){
+        return $this->hasMany(ProductImage::class, 'product_id');
     }
 }

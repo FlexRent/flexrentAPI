@@ -3,6 +3,9 @@
 - Mudar a versão do php no linux:
 `update-alternatives --config php`
 
+- Para gerar as chaves da aplicação:
+`php artisan key:generate`
+
 - Criar Model
 `php artisan make:model NomeModel`
 
