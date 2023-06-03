@@ -11,13 +11,11 @@ use Illuminate\Foundation\Http\FormRequest;
  * @property string $name
  * @property string $description
  * @property string $model
- * @property float $price
+ * @property float $daily_price
  * @property string $image
  * @property string $status
- * @property string $withdrawal_week
- * @property string $delivery_week
- * @property string $weekend_withdrawal
- * @property string $weekend_delivery
+ * @property string $custom_time_from
+ * @property string $custom_time_until
  */
 class ProductsRequest extends FormRequest
 {
@@ -40,13 +38,12 @@ class ProductsRequest extends FormRequest
             "name" => "required",
             "description" => "required",
             "model" => "required",
-            "price" => "required",
+            "daily_price" => "required",
+            "images" => "required",
+            "product_price" => "required",
+            "rent_day" => "required",
             "images" => "required",
             "status" => "required",
-            "withdrawal_week" => "required",
-            "delivery_week" => "required",
-            "weekend_withdrawal" => "required",
-            "weekend_delivery" => "required",
             "brand_name" => "required",
             "category_id" => "required",
         ];
@@ -57,34 +54,35 @@ class ProductsRequest extends FormRequest
      *
      * @return array<string, string>
      */
-    // public function attributes(): array
-    // {
-    //     return [
-    //         "name" => "name",
-    //         "description" => "description",
-    //         "model" => "model",
-    //         "price" => "price",
-    //         "image" => "image",
-    //         "status" => "status",
-    //         "withdrawal_week" => "withdrawal_week",
-    //         "delivery_week" => "delivery_week",
-    //         "weekend_withdrawal" => "weekend_withdrawal",
-    //         "weekend_delivery" => "weekend_delivery",
-    //         "brand_name" => "brand_name",
-    //         "category_id" => "category_id",
-    //         // "brand_id" => "brand_id"
-    //     ];
-    // }
+    public function attributes(): array
+    {
+        return [
+            "name" => "name",
+            "description" => "description",
+            "model" => "model",
+            "daily_price" => "daily_price",
+            "product_price" => "product_price",
+            "any_time" => "any_time",
+            "images" => "images",
+            "status" => "status",
+            "custom_time_from" => "custom_time_from",
+            "custom_time_until" => "custom_time_until",
+            "rent_day" => "rent_day",
+            "brand_name" => "brand_name",
+            "category_id" => "category_id",
+            // "brand_id" => "brand_id"
+        ];
+    }
 
-    // /**
-    //  * Pega as mensagens de erro para as regras de validação definidas.
-    //  *
-    //  * @return array<string, string>
-    //  */
-    // public function messages(): array
-    // {
-    //     return [
-    //         "required" => "O campo ':attribute' é obrigatório.",
-    //     ];
-    // }
+    /**
+     * Pega as mensagens de erro para as regras de validação definidas.
+     *
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return [
+            "required" => "O campo ':attribute' é obrigatório.",
+        ];
+    }
 }

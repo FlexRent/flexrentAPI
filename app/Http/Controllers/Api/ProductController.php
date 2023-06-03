@@ -20,7 +20,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::paginate(10); // 10 produtos por página
+        $products = Product::paginate(10);
 
         if (!$products->isEmpty()) {
             $paginationData = $products->toArray();
@@ -51,14 +51,14 @@ class ProductController extends Controller
      */
     public function showOne(Request $request)
     {
-        // $productId = $request->product_id;
+        $productId = $request->product_id;
 
-        // if (!is_numeric($productId)) {
-        //     return response()->json([
-        //         'status' => Response::HTTP_BAD_REQUEST,
-        //         'mensagem' => 'ID do produto inválido',
-        //     ], Response::HTTP_BAD_REQUEST);
-        // }
+        if (!is_numeric($productId)) {
+            return response()->json([
+                'status' => Response::HTTP_BAD_REQUEST,
+                'mensagem' => 'ID do produto inválido',
+            ], Response::HTTP_BAD_REQUEST);
+        }
 
         $product = Product::find($request->product_id);
 
@@ -159,8 +159,8 @@ class ProductController extends Controller
     public function store(ProductsRequest $request)
     {
         $product = new Product($request->all());
-        $product->user_id = auth()->user()->id; // acho que nao precisa disso
-        
+        $product->user_id = auth()->user()->id;
+
         if ($product->save()) {
 
             foreach($request->images as $image){

@@ -80,6 +80,24 @@ class PassportAuthController extends Controller
         ], Response::HTTP_OK);
     }
 
+    public function recoverPassword(Request $request)
+    {
+        $user = User::where('email', $request->email)->first();
+
+        if ($user) {
+            $user->update(['password' => bcrypt($request->password)]);
+            return response()->json([
+                'status' => Response::HTTP_OK,
+                'mensagem' => 'Senha alterada com sucesso',
+            ], Response::HTTP_OK);
+        } else {
+            return response()->json([
+                'status' => Response::HTTP_UNAUTHORIZED,
+                'mensagem' => 'Não autorizado',
+            ], Response::HTTP_UNAUTHORIZED);
+        }
+    }
+
 
     /**
      * Retorna as informações do usuário logado
