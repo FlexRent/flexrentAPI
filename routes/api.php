@@ -45,6 +45,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::apiResource('assessments', AssessmentsController::class);
 
     // Endereços
+    Route::get('addresses/user', [AddressesController::class, 'showAddressesUser']);
     Route::apiResource('addresses', AddressesController::class);
 
     // Relacionamento entre Endereços - Usuario/Produto

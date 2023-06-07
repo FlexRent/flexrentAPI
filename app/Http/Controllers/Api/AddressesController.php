@@ -44,6 +44,34 @@ class AddressesController extends Controller
         ], Response::HTTP_OK);
     }
 
+    public function showAddressesUser(Request $request)
+    {
+        $addresses = Addresses::where('user_id', auth()->user()->id)->paginate(10);
+
+        if (!$addresses->isEmpty()) {
+            $paginationData = $addresses->toArray();
+
+            return response()->json([
+                'status' => Response::HTTP_OK,
+                'mensagem' => 'Lista de endereços retornada',
+                'pagination' => [
+                    'currentPage' => $paginationData['current_page'],
+                    'totalPages' => $paginationData['last_page'],
+                    'totalAddresses' => $paginationData['total'],
+                    'perPage' => $paginationData['per_page'],
+                    'prev_page_url' => $paginationData['prev_page_url'],
+                    'next_page_url' => $paginationData['next_page_url'],
+                ],
+                'addresses' => AddressesResource::collection($addresses)
+            ], Response::HTTP_OK);
+        }
+
+        return response()->json([
+            'status' => Response::HTTP_OK,
+            'mensagem' => 'Nenhum endereço encontrado',
+        ], Response::HTTP_OK);
+    }
+
 
     /**
      * Cria um novo endereço
@@ -95,12 +123,12 @@ class AddressesController extends Controller
     {
 
         if ($address->user_id == auth()->user()->id) {
-        $address->delete();
+            $address->delete();
 
-        return response()->json([
-            'status' => Response::HTTP_OK,
-            'mensagem' => 'Endereço deletado'
-        ], Response::HTTP_OK);
+            return response()->json([
+                'status' => Response::HTTP_OK,
+                'mensagem' => 'Endereço deletado'
+            ], Response::HTTP_OK);
         }
 
         return response()->json([
