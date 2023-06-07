@@ -51,6 +51,7 @@ class AddressesController extends Controller
     public function store(AddressesRequest $request)
     {
         $address = new Addresses($request->all());
+        $address->user_id = auth()->user()->id;
 
         if ($address->save()) {
             return response()->json([

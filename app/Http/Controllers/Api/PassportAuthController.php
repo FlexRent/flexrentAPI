@@ -33,7 +33,8 @@ class PassportAuthController extends Controller
         return response()->json([
             'status' => Response::HTTP_OK,
             'mensagem' => 'Usuário criado com sucesso',
-            'token' => $token
+            'token' => $token,
+            'user' => new UserResource($user)
         ], Response::HTTP_OK);
     }
 

@@ -9,10 +9,10 @@ class Addresses extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['address_title', 'street', 'number', 'complement', 'district', 'city', 'state', 'country', 'zipcode'];
+    protected $fillable = ['address_title', 'street', 'number', 'complement', 'district', 'city', 'state', 'country', 'zipcode', 'user_id'];
 
-    // public function Products()
-    // {
-    //     return $this->hasMany(Product::class, 'address_id');
-    // }
+    public function Users()
+    {
+        return $this->hasMany(User::class, 'user_id');
+    }
 }

@@ -36,6 +36,7 @@ class AddressesRequest extends FormRequest
     {
         return [
             "address_title" => "required",
+            "user_id" => "required",
             "street" => "required",
             "number" => "required",
             "complement" => "required",
