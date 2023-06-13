@@ -28,6 +28,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('/logout', [PassportAuthController::class, 'logout']);
 
     // Cartões
+    Route::get('/cards/user', [CardController::class, 'showCardUser']);
     Route::apiResource('cards', CardController::class);
 
     // Produtos
