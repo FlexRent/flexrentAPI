@@ -31,7 +31,7 @@ class CardController extends Controller
                     'prev_page_url' => $paginationData['prev_page_url'],
                     'next_page_url' => $paginationData['next_page_url'],
                 ],
-                'cartões' => CardResource::collection($card)
+                'cards' => CardResource::collection($card)
             ], Response::HTTP_OK);
         }
 
@@ -39,6 +39,35 @@ class CardController extends Controller
             'status' => Response::HTTP_NOT_FOUND,
             'mensagem' => 'Nenhum cartão encontrado',
         ], Response::HTTP_NOT_FOUND);
+    }
+
+    public function showCardUser()
+    {
+        $cards = Cards::where('user_id', auth()->user()->id)->paginate(10);
+
+        if (!$cards->isEmpty()) {
+            $paginationData = $cards->toArray();
+
+            return response()->json([
+                'status' => Response::HTTP_OK,
+                'mensagem' => 'Lista de pedidos de catões retornada',
+                'nome' => auth()->user()->id,
+                'pagination' => [
+                    'currentPage' => $paginationData['current_page'],
+                    'totalPages' => $paginationData['last_page'],
+                    'totalPedidosDeAluguel' => $paginationData['total'],
+                    'perPage' => $paginationData['per_page'],
+                    'prev_page_url' => $paginationData['prev_page_url'],
+                    'next_page_url' => $paginationData['next_page_url'],
+                ],
+                'cards' => CardResource::collection($cards)
+            ], Response::HTTP_OK);
+        }
+
+        return response()->json([
+            'status' => Response::HTTP_OK,
+            'mensagem' => 'Nenhum cartão encontrado',
+        ], Response::HTTP_OK);
     }
 
     /**

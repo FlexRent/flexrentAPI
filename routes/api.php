@@ -28,6 +28,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('/logout', [PassportAuthController::class, 'logout']);
 
     // Cartões
+    Route::get('/cards/user', [CardController::class, 'showCardUser']);
     Route::apiResource('cards', CardController::class);
 
     // Produtos
@@ -45,6 +46,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::apiResource('assessments', AssessmentsController::class);
 
     // Endereços
+    Route::get('addresses/user', [AddressesController::class, 'showAddressesUser']);
     Route::apiResource('addresses', AddressesController::class);
 
     // Relacionamento entre Endereços - Usuario/Produto
