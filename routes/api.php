@@ -22,6 +22,12 @@ use App\Http\Controllers\Api\PassportAuthController;
 |
 */
 
+Route::get('/', function () {
+    return response()->json([
+        'sucess' => "API flexrent esta funcionando",
+    ]);
+});
+
 Route::group(['middleware' => 'auth:api'], function () {
     // Usuário
     Route::get('/user', [PassportAuthController::class, 'userInfo']);
