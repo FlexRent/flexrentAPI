@@ -39,7 +39,7 @@ class ProductsRequest extends FormRequest
             "description" => "required",
             "model" => "required",
             "daily_price" => "required",
-            "images" => "required",
+            // "images" => "required",
             "product_price" => "required",
             "rent_day" => "required",
             // "image" => "required",
