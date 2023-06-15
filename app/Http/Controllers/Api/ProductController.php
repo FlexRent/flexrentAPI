@@ -163,13 +163,13 @@ class ProductController extends Controller
 
         if ($product->save()) {
 
-            foreach($request->images as $image){
-                $url = Storage::putFile("img", $image);
-                ProductImage::create([
-                    'product_id' => $product->id,
-                    'image' => $url
-                ]);
-            }
+            // foreach($request->images as $image){
+            //     $url = Storage::putFile("img", $image);
+            //     ProductImage::create([
+            //         'product_id' => $product->id,
+            //         'image' => $url
+            //     ]);
+            // }
 
             return response()->json([
                 'status' => Response::HTTP_OK,
